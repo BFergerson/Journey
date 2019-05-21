@@ -1,0 +1,9 @@
+try {
+    System.loadLibrary("jawt"); //$NON-NLS-1$
+} catch(UnsatisfiedLinkError e) {
+    String message = e.getMessage();
+    if(!message.startsWith("Native Library") || !message.endsWith("already loaded in another classloader")) { //$NON-NLS-1$ //$NON-NLS-2$
+        throw e;
+    }
+    System.out.println("Failed loading jawt.dll. It is already loaded by another classloader."); //$NON-NLS-1$
+}

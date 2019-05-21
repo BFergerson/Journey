@@ -1,0 +1,107 @@
+apply plugin: 'java'
+
+group 'com.codebrig'
+version '0.1.0'
+
+sourceCompatibility = 1.8
+
+archivesBaseName = 'journey-browser'
+
+ext {
+    jcefVersion = '73.1.11.215'
+    jcefCommit = 'd348788e3347fa4d2a421773463f7dd62da60991'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile fileTree(dir: 'jcef/binary_distrib/linux64/bin/', include: '*.jar')
+    compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
+    compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
+}
+
+task createProperties(dependsOn: processResources) {
+    doLast {
+        def mode = "online"
+        if ((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
+                System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline")) {
+            mode = "offline"
+        }
+        new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
+            Properties p = new Properties()
+            p['version'] = project.version.toString()
+            p['jcef_version'] = project.jcefVersion.toString()
+            p['build_date'] = new Date().toInstant().toString()
+            p['mode'] = mode
+            p.store w, null
+        }
+    }
+}
+classes {
+    dependsOn createProperties
+}
+
+jar {
+    dependsOn "initEnvironment"
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task initEnvironment {
+    if (System.getenv('JITPACK') == "true" ||
+            (((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
+                    (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))))) {
+        println "Downloading JCEF distribution"
+        def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
+        f.getParentFile().mkdirs()
+        new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
+                .withInputStream { i -> f.withOutputStream { it << i } }
+        println "Successfully downloaded JCEF distribution"
+
+        println "Unzipping JCEF distribution"
+        ant.unzip(src: f.absolutePath, dest: f.getParentFile().absolutePath, overwrite: "true")
+        println "Successfully unzipped JCEF distribution"
+
+        if ((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
+                (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))) {
+            def linuxBuild = new File('natives/jcef-distrib-linux64.zip')
+            linuxBuild.getParentFile().mkdirs()
+            def windows32Build = new File('natives/jcef-distrib-windows32.zip')
+            def windows64Build = new File('natives/jcef-distrib-windows64.zip')
+
+            println "Downloading CEF natives files for offline distribution"
+            new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
+                    .withInputStream { i -> linuxBuild.withOutputStream { it << i } }
+            new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-windows32.zip")
+                    .withInputStream { i -> windows32Build.withOutputStream { it << i } }
+            new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-windows64.zip")
+                    .withInputStream { i -> windows64Build.withOutputStream { it << i } }
+            println "Successfully downloaded CEF natives files for offline distribution"
+
+            println "Unpacking CEF natives files for offline distribution"
+            ant.unzip(src: linuxBuild.absolutePath, dest: linuxBuild.getParentFile().absolutePath, overwrite: "true")
+            ant.unzip(src: windows32Build.absolutePath, dest: windows32Build.getParentFile().absolutePath, overwrite: "true")
+            ant.unzip(src: windows64Build.absolutePath, dest: windows64Build.getParentFile().absolutePath, overwrite: "true")
+            println "Successfully unpacked CEF natives files for offline distribution"
+
+            def resourcesDir = file('src/main/resources')
+            new File(linuxBuild.getParentFile(), "linux64").renameTo(new File(resourcesDir, "linux64"))
+            new File(windows32Build.getParentFile(), "win32").renameTo(new File(resourcesDir, "win32"))
+            new File(windows64Build.getParentFile(), "win64").renameTo(new File(resourcesDir, "win64"))
+        }
+    }
+}
+
+task patchJCEF {
+    doFirst {
+        //https://bitbucket.org/chromiumembedded/java-cef/issues/317
+        def cefAppFile = file('jcef/java/org/cef/CefApp.java')
+        cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
+    }
+}
