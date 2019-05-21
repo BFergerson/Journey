@@ -25,10 +25,10 @@ repositories {
 }
 
 dependencies {
-      compile 'com.github.codebrig:journey:0.1.0-online'
+      compile 'com.github.codebrig:journey:0.1.1-online'
       
       //or use the offline version (includes native CEF files for all platforms)
-      //compile 'com.github.codebrig:journey:0.1.0-offline'
+      //compile 'com.github.codebrig:journey:0.1.1-offline'
 }
 ```
 
@@ -45,10 +45,10 @@ dependencies {
 <dependency>
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
-	<version>0.1.0-online</version>
+	<version>0.1.1-online</version>
 	
 	<!-- or use the offline version (includes native CEF files for all platforms) -->
-	<!-- <version>0.1.0-offline</version> -->
+	<!-- <version>0.1.1-offline</version> -->
 </dependency>
 ```
 
@@ -91,4 +91,4 @@ public class JourneyBrowser {
 
 | Build Date | Journey Version  | JCEF Version | JCEF Commit                              |
 |------------|------------------|--------------|------------------------------------------|
-| 2019-05-20 | 0.1.0           | 73.1.11.215  | [d348788e3347fa4d2a421773463f7dd62da60991](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) |
+| 2019-05-21 | 0.1.1           | 73.1.11.215  | [d348788e3347fa4d2a421773463f7dd62da60991](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) |
