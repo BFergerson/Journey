@@ -55,7 +55,7 @@ jar {
 }
 
 task initEnvironment {
-    if (System.getenv('JITPACK') == "true" ||
+    if (System.getenv('JITPACK') == "true" || System.getenv("TRAVIS_OS_NAME") == "osx" ||
             (((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
                     (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))))) {
         println "Downloading JCEF distribution"
