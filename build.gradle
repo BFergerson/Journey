@@ -137,6 +137,8 @@ task replaceOSXJCEF {
 
         jcefFile.delete()
         linuxJcefFile.renameTo(jcefFile)
+        f.getParentFile().deleteDir()
+        
         println "Replaced patched jcef.jar (java-cef#270)"
     }
 }
