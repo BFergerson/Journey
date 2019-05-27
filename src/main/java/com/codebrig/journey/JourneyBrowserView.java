@@ -12,7 +12,7 @@ import java.awt.*;
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for easy of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.1.1
+ * @version 0.2.0
  * @since 0.1.1
  */
 public class JourneyBrowserView extends JComponent {
@@ -23,7 +23,7 @@ public class JourneyBrowserView extends JComponent {
     static {
         DEFAULT_SETTINGS.windowless_rendering_enabled = false;
         DEFAULT_SETTINGS.log_file = String.format("%s/journey-%s/debug.log",
-                System.getProperty("java.io.tmpdir"), JourneyConstants.VERSION);
+                System.getProperty("java.io.tmpdir"), JourneyLoader.VERSION);
     }
 
     private static CefSettings cefSettings;

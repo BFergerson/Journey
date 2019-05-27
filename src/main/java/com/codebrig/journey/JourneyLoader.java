@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Enumeration;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -21,10 +22,16 @@ import java.util.zip.ZipFile;
  * Downloads and loads the necessary CEF files for the current OS.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.1.1
+ * @version 0.2.0
  * @since 0.1.1
  */
 public class JourneyLoader {
+
+    private static final ResourceBundle BUILD = ResourceBundle.getBundle("journey_build");
+    public static final String VERSION = BUILD.getString("version");
+    public static final String JCEF_VERSION = BUILD.getString("jcef_version");
+    public static final String BUILD_DATE = BUILD.getString("build_date");
+    public static final String MODE = BUILD.getString("mode");
 
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
     };
@@ -34,8 +41,8 @@ public class JourneyLoader {
         if (loaderSetup.getAndSet(true)) {
             return;
         }
-        JOURNEY_LOADER_LISTENER.journeyLoaderStarted(JourneyConstants.VERSION);
-        File nativeDir = new File(System.getProperty("java.io.tmpdir"), "journey-" + JourneyConstants.VERSION);
+        JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION);
+        File nativeDir = new File(System.getProperty("java.io.tmpdir"), "journey-" + VERSION);
         if (!nativeDir.exists()) nativeDir.mkdirs();
         JOURNEY_LOADER_LISTENER.usingNativeDirectory(nativeDir);
 
@@ -73,10 +80,10 @@ public class JourneyLoader {
 
         String jcefDistribFile = "jcef-distrib-" + providerName.replace("_", "") + ".zip";
         File localNative = new File(nativeDir, jcefDistribFile);
-        if ("online".equals(JourneyConstants.MODE) && !localNative.exists()) {
+        if ("online".equals(MODE) && !localNative.exists()) {
             JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
             Files.copy(new URL(String.format("https://github.com/CodeBrig/Journey/releases/download/%s-online/%s",
-                    JourneyConstants.VERSION, jcefDistribFile)).openStream(),
+                    VERSION, jcefDistribFile)).openStream(),
                     localNative.toPath(), StandardCopyOption.REPLACE_EXISTING);
             JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
         }
@@ -84,7 +91,7 @@ public class JourneyLoader {
         if (!new File(nativeDir, "icudtl.dat").exists()) {
             JOURNEY_LOADER_LISTENER.extractingNativeCEFFiles();
             String libLocation = String.format("%s/bin/lib/%s/", jcefName, jcefName);
-            if ("offline".equals(JourneyConstants.MODE)) {
+            if ("offline".equals(MODE)) {
                 //extract from self .jar
                 localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             }
