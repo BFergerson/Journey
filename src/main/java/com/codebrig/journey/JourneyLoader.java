@@ -62,6 +62,10 @@ public class JourneyLoader {
             providerName = "linux_64";
             jcefName = "linux64";
             JOURNEY_LOADER_LISTENER.determinedOS("linux", 64);
+        } else if (OS.isMacintosh()) {
+            providerName = "macintosh_64";
+            jcefName = "macosx64";
+            JOURNEY_LOADER_LISTENER.determinedOS("macintosh", 64);
         } else {
             JOURNEY_LOADER_LISTENER.determinedOS("unsupported", -1);
             throw new UnsupportedOperationException("OS is not currently supported");
@@ -117,6 +121,8 @@ public class JourneyLoader {
             loadWindows(nativeDir);
         } else if (OS.isLinux()) {
             loadLinux(nativeDir);
+        } else if (OS.isMacintosh()) {
+            loadMacintosh(nativeDir);
         }
         JOURNEY_LOADER_LISTENER.loadedNativeCEFFiles();
 
@@ -225,6 +231,17 @@ public class JourneyLoader {
     }
 
     private static void loadWindows(File nativeDir) throws Exception {
+        System.setProperty("java.library.path", nativeDir.getAbsolutePath());
+        try {
+            Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+            fieldSysPath.setAccessible(true);
+            fieldSysPath.set(null, null);
+        } catch (NoSuchFieldException ex) {
+            //ignore
+        }
+    }
+
+    private static void loadMacintosh(File nativeDir) throws Exception {
         System.setProperty("java.library.path", nativeDir.getAbsolutePath());
         try {
             Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
