@@ -103,5 +103,9 @@ task patchJCEF {
         //https://bitbucket.org/chromiumembedded/java-cef/issues/317
         def cefAppFile = file('jcef/java/org/cef/CefApp.java')
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
+
+        //https://bitbucket.org/chromiumembedded/java-cef/issues/270
+        def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
+        cefBrowserWindowMacFile.text = ""
     }
 }
