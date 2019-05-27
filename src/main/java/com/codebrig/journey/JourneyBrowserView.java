@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Wraps CefApp/CefClient/CefBrowser and extends JComponent for easy of implementation.
+ * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
  * @version 0.1.1
