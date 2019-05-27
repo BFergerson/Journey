@@ -118,7 +118,6 @@ task patchJCEF {
 task replaceOSXJCEF {
     doFirst {
         println "Replacing temporarily patched JCEF classes (java-cef#270)"
-        println "to patch: " + new File("patches/jcef-270/CefBrowserWindowMac.class").exists()
         def macBrowserDir = new File("jcef", "out/macosx64/org/cef/browser/mac")
         macBrowserDir.mkdirs()
         new File("patches/jcef-270/CefBrowserWindowMac.class").renameTo(new File(macBrowserDir, "CefBrowserWindowMac.class"))
