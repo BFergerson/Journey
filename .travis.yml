@@ -12,7 +12,7 @@ before_install:
 
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./setup_native_linux.sh ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./setup_native_mac.sh ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./setup_native_mac.sh ; fi
 
 script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_native_linux.sh && ./gradlew build -x test ; fi
