@@ -22,6 +22,7 @@ dependencies {
     compile fileTree(dir: 'jcef/binary_distrib/linux64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
+    compile fileTree(dir: 'jcef/binary_distrib/macosx64/bin/', include: '*.jar')
 }
 
 task createProperties(dependsOn: processResources) {
@@ -96,16 +97,39 @@ task initEnvironment {
             new File(windows64Build.getParentFile(), "win64").renameTo(new File(resourcesDir, "win64"))
         }
     }
+
+    if (System.getenv("TRAVIS_OS_NAME")) {
+        println "Replacing patched jcef.jar (java-cef#270)"
+        def jcefFile = new File("macosx64/bin/jcef_app.app/Contents/Java/jcef.jar")
+        println "Jcef exists: " + jcefFile.exists()
+
+        println "Downloading JCEF distribution"
+        def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
+        f.getParentFile().mkdirs()
+        new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
+                .withInputStream { i -> f.withOutputStream { it << i } }
+        println "Successfully downloaded JCEF distribution"
+
+        println "Unzipping JCEF distribution"
+        ant.unzip(src: f.absolutePath, dest: f.getParentFile().absolutePath, overwrite: "true")
+        println "Successfully unzipped JCEF distribution"
+
+        println "Replaced patched jcef.jar (java-cef#270)"
+    }
 }
 
 task patchJCEF {
     doFirst {
+        println "env: " + System.getenv("TRAVIS_OS_NAME")
+
         //https://bitbucket.org/chromiumembedded/java-cef/issues/317
         def cefAppFile = file('jcef/java/org/cef/CefApp.java')
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
 
-        //https://bitbucket.org/chromiumembedded/java-cef/issues/270
-        def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
-        cefBrowserWindowMacFile.text = ""
+        if (System.getenv("TRAVIS_OS_NAME")) {
+            //https://bitbucket.org/chromiumembedded/java-cef/issues/270
+            def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
+            cefBrowserWindowMacFile.text = ""
+        }
     }
 }
