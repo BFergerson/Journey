@@ -102,13 +102,13 @@ task initEnvironment {
 task patchJCEF {
     doFirst {
         //https://bitbucket.org/chromiumembedded/java-cef/issues/317
-        println "Patching chromiumembedded/java-cef/issues/317"
+        println "Patching java-cef#317"
         def cefAppFile = file('jcef/java/org/cef/CefApp.java')
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
 
         if (System.getenv("TRAVIS_OS_NAME") == "osx") {
             //https://bitbucket.org/chromiumembedded/java-cef/issues/270
-            println "Patching chromiumembedded/java-cef/issues/270"
+            println "Patching java-cef#270"
             def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
             cefBrowserWindowMacFile.text = ""
         }
