@@ -8,8 +8,7 @@ matrix:
     osx_image: xcode10.2
 
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install java8 ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install adoptopenjdk/openjdk/adoptopenjdk8 ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ant ; fi
 
 before_script:
