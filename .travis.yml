@@ -7,8 +7,15 @@ matrix:
   - os: osx
     osx_image: xcode10.2
 
+jdk:
+  - openjdk8
+
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install adoptopenjdk/openjdk/adoptopenjdk8 ; fi
+- unset _JAVA_OPTIONS
+  echo JAVA_HOME = ${JAVA_HOME}
+- echo PATH = ${PATH}
+- java -version
+- ls ${JAVA_HOME}
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ant ; fi
 
 before_script:
