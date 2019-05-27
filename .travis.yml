@@ -5,17 +5,9 @@ matrix:
   - os: linux
     dist: trusty
   - os: osx
-    osx_image: xcode10.2
-
-jdk:
-  - openjdk8
+    osx_image: xcode9.3
 
 before_install:
-- unset _JAVA_OPTIONS
-  echo JAVA_HOME = ${JAVA_HOME}
-- echo PATH = ${PATH}
-- java -version
-- ls ${JAVA_HOME}
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ant ; fi
 
 before_script:
