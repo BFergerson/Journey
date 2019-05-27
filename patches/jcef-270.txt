@@ -1,0 +1,17 @@
+try {
+  // Java versions older than 8u121.
+  Method m = CPlatformWindow.class.getMethod("getNSWindowPtr");
+  result = ((Long) m.invoke((CPlatformWindow) pWindow)).longValue();
+} catch (Exception e1) {
+  try {
+    // Java versions 8u121 and newer.
+    Class c = Class.forName("sun.lwawt.macosx.CFRetainedResource.CFNativeAction");
+    Method m = CPlatformWindow.class.getMethod("execute");
+    m.invoke(new CFRetainedResource.CFNativeAction() {  // How to do this?
+        @Override
+        public void run(long l) {
+            result = l;
+        }
+    });
+  } catch (Exception e2) {}
+}
