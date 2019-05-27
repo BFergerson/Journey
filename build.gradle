@@ -117,10 +117,6 @@ task patchJCEF {
 
 task replaceOSXJCEF {
     doFirst {
-        println "Replacing patched jcef.jar (java-cef#270)"
-        def jcefFile = new File("jcef/binary_distrib/macosx64/bin/jcef_app.app/Contents/Java/jcef.jar")
-        println "Jcef exists: " + jcefFile.exists()
-
         println "Downloading JCEF distribution"
         def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
         f.getParentFile().mkdirs()
@@ -132,11 +128,12 @@ task replaceOSXJCEF {
         ant.unzip(src: f.absolutePath, dest: f.getParentFile().absolutePath, overwrite: "true")
         println "Successfully unzipped JCEF distribution"
 
-        def linuxJcefFile = new File("jcef/binary_distrib/linux64/bin/jcef.jar")
-        println "linux Jcef exists: " + linuxJcefFile.exists()
-
-        jcefFile.delete()
-        linuxJcefFile.renameTo(jcefFile)
-        println "Replaced patched jcef.jar (java-cef#270)"
+        println "Replacing patched JCEF classes (java-cef#270)"
+        new File("jcef", "out").deleteDir()
+        ant.unzip(
+                src: new File("jcef/binary_distrib/linux64/bin/jcef.jar").absolutePath,
+                dest: new File("jcef", "out").absolutePath, overwrite: "true"
+        )
+        println "Replaced patched JCEF classes (java-cef#270)"
     }
 }
