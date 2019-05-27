@@ -97,25 +97,6 @@ task initEnvironment {
             new File(windows64Build.getParentFile(), "win64").renameTo(new File(resourcesDir, "win64"))
         }
     }
-
-    if (System.getenv("TRAVIS_OS_NAME")) {
-        println "Replacing patched jcef.jar (java-cef#270)"
-        def jcefFile = new File("macosx64/bin/jcef_app.app/Contents/Java/jcef.jar")
-        println "Jcef exists: " + jcefFile.exists()
-
-        println "Downloading JCEF distribution"
-        def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
-        f.getParentFile().mkdirs()
-        new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
-                .withInputStream { i -> f.withOutputStream { it << i } }
-        println "Successfully downloaded JCEF distribution"
-
-        println "Unzipping JCEF distribution"
-        ant.unzip(src: f.absolutePath, dest: f.getParentFile().absolutePath, overwrite: "true")
-        println "Successfully unzipped JCEF distribution"
-
-        println "Replaced patched jcef.jar (java-cef#270)"
-    }
 }
 
 task patchJCEF {
@@ -131,5 +112,31 @@ task patchJCEF {
             def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
             cefBrowserWindowMacFile.text = ""
         }
+    }
+}
+
+task replaceOSXJCEF {
+    doFirst {
+        println "Replacing patched jcef.jar (java-cef#270)"
+        def jcefFile = new File("jcef/binary_distrib/macosx64/bin/jcef_app.app/Contents/Java/jcef.jar")
+        println "Jcef exists: " + jcefFile.exists()
+
+        println "Downloading JCEF distribution"
+        def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
+        f.getParentFile().mkdirs()
+        new URL("https://github.com/CodeBrig/Journey/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
+                .withInputStream { i -> f.withOutputStream { it << i } }
+        println "Successfully downloaded JCEF distribution"
+
+        println "Unzipping JCEF distribution"
+        ant.unzip(src: f.absolutePath, dest: f.getParentFile().absolutePath, overwrite: "true")
+        println "Successfully unzipped JCEF distribution"
+
+        def linuxJcefFile = new File("jcef/binary_distrib/linux64/bin/jcef.jar")
+        println "linux Jcef exists: " + linuxJcefFile.exists()
+
+        jcefFile.delete()
+        linuxJcefFile.renameTo(jcefFile)
+        println "Replaced patched jcef.jar (java-cef#270)"
     }
 }
