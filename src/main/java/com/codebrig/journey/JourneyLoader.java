@@ -32,6 +32,7 @@ public class JourneyLoader {
     public static final String JCEF_VERSION = BUILD.getString("jcef_version");
     public static final String BUILD_DATE = BUILD.getString("build_date");
     public static final String MODE = BUILD.getString("mode");
+    public static final String PROJECT_URL = BUILD.getString("project_url");
 
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
     };
@@ -82,9 +83,9 @@ public class JourneyLoader {
         File localNative = new File(nativeDir, jcefDistribFile);
         if ("online".equals(MODE) && !localNative.exists()) {
             JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
-            Files.copy(new URL(String.format("https://github.com/CodeBrig/Journey/releases/download/%s-online/%s",
-                    VERSION, jcefDistribFile)).openStream(),
-                    localNative.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(new URL(String.format("%s/releases/download/%s-online/%s",
+                    PROJECT_URL, VERSION, jcefDistribFile)).openStream(), localNative.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
             JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
         }
 
