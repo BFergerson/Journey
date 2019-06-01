@@ -134,7 +134,7 @@ public class JourneyLoader {
         }
         JOURNEY_LOADER_LISTENER.loadedNativeCEFFiles();
 
-        CefApp.startup();
+        //CefApp.startup();
         JOURNEY_LOADER_LISTENER.journeyLoaderComplete();
     }
 
