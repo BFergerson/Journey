@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -29,8 +30,6 @@ public class JourneyLoader {
 
     private static final ResourceBundle BUILD = ResourceBundle.getBundle("journey_build");
     public static final String VERSION = BUILD.getString("version");
-    public static final String JCEF_VERSION = BUILD.getString("jcef_version");
-    public static final String BUILD_DATE = BUILD.getString("build_date");
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
 
@@ -49,6 +48,7 @@ public class JourneyLoader {
 
         String jcefName;
         String providerName;
+        int chromiumMajorVersion;
         JOURNEY_LOADER_LISTENER.determiningOS();
         if (OS.isWindows()) {
             boolean is64bit;
@@ -66,25 +66,29 @@ public class JourneyLoader {
                 jcefName = "win32";
                 JOURNEY_LOADER_LISTENER.determinedOS("windows", 64);
             }
+            chromiumMajorVersion = 73;
         } else if (OS.isLinux()) {
             providerName = "linux_64";
             jcefName = "linux64";
             JOURNEY_LOADER_LISTENER.determinedOS("linux", 64);
+            chromiumMajorVersion = 67;
         } else if (OS.isMacintosh()) {
             providerName = "macintosh_64";
             jcefName = "macosx64";
             JOURNEY_LOADER_LISTENER.determinedOS("macintosh", 64);
+            chromiumMajorVersion = 69;
         } else {
             JOURNEY_LOADER_LISTENER.determinedOS("unsupported", -1);
             throw new UnsupportedOperationException("OS is not currently supported");
         }
+        JOURNEY_LOADER_LISTENER.usingChromiumVersion(chromiumMajorVersion);
 
         String jcefDistribFile = "jcef-distrib-" + providerName.replace("_", "") + ".zip";
         File localNative = new File(nativeDir, jcefDistribFile);
         if ("online".equals(MODE) && !localNative.exists()) {
             JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
-            Files.copy(new URL(String.format("%s/releases/download/%s-online/%s",
-                    PROJECT_URL, VERSION, jcefDistribFile)).openStream(), localNative.toPath(),
+            Files.copy(new URL(String.format("%s/releases/download/%s-%s-online/%s",
+                    PROJECT_URL, VERSION, chromiumMajorVersion, jcefDistribFile)).openStream(), localNative.toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
             JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
         }
@@ -134,7 +138,13 @@ public class JourneyLoader {
         }
         JOURNEY_LOADER_LISTENER.loadedNativeCEFFiles();
 
-        //CefApp.startup();
+        if (chromiumMajorVersion >= 73) {
+            Method method = CefApp.class.getMethod("startup");
+            method.invoke(null);
+        } else if (chromiumMajorVersion >= 69) {
+            Method method = CefApp.class.getMethod("initXlibForMultithreading");
+            method.invoke(null);
+        }
         JOURNEY_LOADER_LISTENER.journeyLoaderComplete();
     }
 
@@ -150,6 +160,8 @@ public class JourneyLoader {
         public abstract void determiningOS();
 
         public abstract void determinedOS(String os, int bits);
+
+        public abstract void usingChromiumVersion(int chromiumVersion);
 
         public abstract void downloadingNativeCEFFiles();
 
@@ -181,6 +193,10 @@ public class JourneyLoader {
 
         @Override
         public void determinedOS(String os, int bits) {
+        }
+
+        @Override
+        public void usingChromiumVersion(int chromiumVersion) {
         }
 
         @Override

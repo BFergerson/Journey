@@ -9,8 +9,16 @@ archivesBaseName = 'journey-browser'
 ext {
     projectUrl = 'https://github.com/CodeBrig/Journey'
 
-    jcefVersion = '69.0.3497.100'
-    jcefCommit = '045302f591e53057a011b4b1df1d26fbee15e35d'
+    jcefVersion = [
+            '67': '67.0.3396.62',
+            '69': '69.0.3497.100',
+            '73': '73.1.11.215'
+    ]
+    jcefCommit = [
+            '67': '1fda5d8f948670d08ef86bc4e8637b8581995ce9',
+            '69': '045302f591e53057a011b4b1df1d26fbee15e35d',
+            '73': 'd348788e3347fa4d2a421773463f7dd62da60991'
+    ]
 }
 
 repositories {
@@ -29,14 +37,15 @@ dependencies {
 task createProperties(dependsOn: processResources) {
     doLast {
         def mode = "online"
-        if ((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
-                System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline")) {
-            mode = "offline"
+        if (System.getenv("TRAVIS_BRANCH") != null) {
+            mode = System.getenv("TRAVIS_BRANCH").split("-")[2]
+        } else if (System.getenv("VERSION") != null) {
+            mode = System.getenv("VERSION").split("-")[2]
         }
+
         new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
-            p['jcef_version'] = project.jcefVersion.toString()
             p['build_date'] = new Date().toInstant().toString()
             p['mode'] = mode
             p['project_url'] = project.projectUrl.toString()
@@ -57,13 +66,20 @@ jar {
 }
 
 task initEnvironment {
+    def chromiumMajorVersion = "73"
+    if (System.getenv("TRAVIS_BRANCH") != null) {
+        chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
+    } else if (System.getenv("VERSION") != null) {
+        chromiumMajorVersion = System.getenv("VERSION").split("-")[1]
+    }
+
     if (System.getenv('JITPACK') == "true" || System.getenv("TRAVIS_OS_NAME") == "osx" ||
             (((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
                     (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))))) {
         println "Downloading JCEF distribution"
         def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
         f.getParentFile().mkdirs()
-        new URL(project.projectUrl + "/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
+        new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
                 .withInputStream { i -> f.withOutputStream { it << i } }
         println "Successfully downloaded JCEF distribution"
 
@@ -79,11 +95,11 @@ task initEnvironment {
             def windows64Build = new File('natives/jcef-distrib-windows64.zip')
 
             println "Downloading CEF natives files for offline distribution"
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-online/jcef-distrib-linux64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
                     .withInputStream { i -> linuxBuild.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-online/jcef-distrib-windows32.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows32.zip")
                     .withInputStream { i -> windows32Build.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-online/jcef-distrib-windows64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows64.zip")
                     .withInputStream { i -> windows64Build.withOutputStream { it << i } }
             println "Successfully downloaded CEF natives files for offline distribution"
 
