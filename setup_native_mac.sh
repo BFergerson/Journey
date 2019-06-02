@@ -2,7 +2,7 @@
 
 git clone https://bitbucket.org/chromiumembedded/java-cef.git jcef
 cd jcef
-git checkout 1fda5d8f948670d08ef86bc4e8637b8581995ce9
+git checkout 045302f591e53057a011b4b1df1d26fbee15e35d
 
 cd .. && ./gradlew patchJCEF
 
