@@ -9,8 +9,8 @@ archivesBaseName = 'journey-browser'
 ext {
     projectUrl = 'https://github.com/CodeBrig/Journey'
 
-    jcefVersion = '73.1.11.215'
-    jcefCommit = 'd348788e3347fa4d2a421773463f7dd62da60991'
+    jcefVersion = '69.0.3497.100'
+    jcefCommit = '045302f591e53057a011b4b1df1d26fbee15e35d'
 }
 
 repositories {
