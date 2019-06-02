@@ -124,12 +124,12 @@ task patchJCEF {
         def cefAppFile = file('jcef/java/org/cef/CefApp.java')
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
 
-        if (System.getenv("TRAVIS_OS_NAME") == "osx") {
-            //https://bitbucket.org/chromiumembedded/java-cef/issues/270
-            println "Patching java-cef#270"
-            def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
-            cefBrowserWindowMacFile.text = ""
-        }
+//        if (System.getenv("TRAVIS_OS_NAME") == "osx") {
+//            //https://bitbucket.org/chromiumembedded/java-cef/issues/270
+//            println "Patching java-cef#270"
+//            def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
+//            cefBrowserWindowMacFile.text = ""
+//        }
     }
 }
 
