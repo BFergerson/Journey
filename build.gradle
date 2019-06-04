@@ -31,7 +31,7 @@ dependencies {
     compile fileTree(dir: 'jcef/binary_distrib/linux64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
-    compile fileTree(dir: 'jcef/binary_distrib/macosx64/bin/', include: '*.jar')
+    compile fileTree(dir: 'jcef/jcef_build/native/Release', include: '*.jar')
 }
 
 task createProperties(dependsOn: processResources) {
@@ -73,7 +73,7 @@ task initEnvironment {
         chromiumMajorVersion = System.getenv("VERSION").split("-")[1]
     }
 
-    if (System.getenv('JITPACK') == "true" || System.getenv("TRAVIS_OS_NAME") == "osx" ||
+    if (System.getenv('JITPACK') == "true" ||
             (((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
                     (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))))) {
         println "Downloading JCEF distribution"
