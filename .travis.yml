@@ -16,7 +16,6 @@ before_script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./setup_native_mac.sh ; fi
 
 script:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./gradlew replaceOSXJCEF ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_native_linux.sh && ./gradlew build -x test ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./build_native_mac.sh && ./gradlew build -x test ; fi
 
@@ -24,8 +23,8 @@ deploy:
   provider: releases
   api_key: $GH_TOKEN
   file:
-  - /home/travis/build/CodeBrig/Journey/build/libs/journey-browser-0.2.0.jar
   - /home/travis/build/CodeBrig/Journey/jcef/binary_distrib/jcef-distrib-linux64.zip
+  - /Users/travis/build/CodeBrig/Journey/build/libs/journey-browser-0.2.0.jar
   - /Users/travis/build/CodeBrig/Journey/jcef/binary_distrib/jcef-distrib-macintosh64.zip
   skip_cleanup: true
   on:

@@ -125,22 +125,3 @@ task patchJCEF {
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
     }
 }
-
-task replaceOSXJCEF {
-    doFirst {
-        println "Replacing temporarily patched JCEF classes (java-cef#270)"
-        def macBrowserDir = new File("jcef/out/linux64/org/cef/browser/mac")
-        macBrowserDir.mkdirs()
-
-        println "first exists: " + new File("patches/jcef-270/CefBrowserWindowMac.class").exists()
-        println "second exists: " + new File("patches/jcef-270/CefBrowserWindowMac\$1.class").exists()
-
-        new File("patches/jcef-270/CefBrowserWindowMac.class").renameTo(new File(macBrowserDir, "CefBrowserWindowMac.class"))
-        new File("patches/jcef-270/CefBrowserWindowMac\$1.class").renameTo(new File(macBrowserDir, "CefBrowserWindowMac\$1.class"))
-
-        println "after first exists: " + new File(macBrowserDir, "CefBrowserWindowMac.class").exists()
-        println "after second exists: " + new File(macBrowserDir, "CefBrowserWindowMac\$1.class").exists()
-
-        println "Successfully replaced temporarily patched JCEF classes (java-cef#270)"
-    }
-}
