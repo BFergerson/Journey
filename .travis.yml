@@ -16,6 +16,7 @@ before_script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./setup_native_mac.sh ; fi
 
 script:
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./gradlew replaceOSXJCEF ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_native_linux.sh && ./gradlew build -x test ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./build_native_mac.sh && ./gradlew build -x test ; fi
 
