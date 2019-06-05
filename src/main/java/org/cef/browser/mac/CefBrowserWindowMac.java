@@ -20,6 +20,22 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
     public long getWindowHandle(Component comp) {
         System.out.println("got to getWindowHandle: " + comp);
         result = new long[1];
+
+        Class LWComponentPeer;
+        Class CPlatformWindow;
+        Class CFNativeAction;
+        Method execute;
+        Method getPlatformWindow;
+        try {
+            LWComponentPeer = Class.forName("sun.lwawt.LWComponentPeer");
+            CPlatformWindow = Class.forName("sun.lwawt.macosx.CPlatformWindow");
+            CFNativeAction = Class.forName("sun.lwawt.macosx.CFRetainedResource.CFNativeAction");
+            execute = CPlatformWindow.getMethod("execute", CFNativeAction);
+            getPlatformWindow = LWComponentPeer.getMethod("getPlatformWindow");
+        } catch (ClassNotFoundException | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+
         while (comp != null) {
             if (comp.isLightweight()) {
                 comp = comp.getParent();
@@ -27,21 +43,6 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
             }
             @SuppressWarnings("deprecation")
             ComponentPeer peer = comp.getPeer();
-
-            Class LWComponentPeer;
-            Class CPlatformWindow;
-            Class CFNativeAction;
-            Method execute;
-            Method getPlatformWindow;
-            try {
-                LWComponentPeer = Class.forName("sun.lwawt.LWComponentPeer");
-                CPlatformWindow = Class.forName("sun.lwawt.macosx.CPlatformWindow");
-                CFNativeAction = Class.forName("sun.lwawt.macosx.CFRetainedResource.CFNativeAction");
-                execute = CPlatformWindow.getMethod("execute", CFNativeAction);
-                getPlatformWindow = LWComponentPeer.getMethod("getPlatformWindow");
-            } catch (ClassNotFoundException | NoSuchMethodException ex) {
-                throw new RuntimeException(ex);
-            }
 
             if (LWComponentPeer.isInstance(peer)) {
                 Object pWindow;
