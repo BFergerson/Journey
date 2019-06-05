@@ -29,7 +29,7 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
         try {
             LWComponentPeer = Class.forName("sun.lwawt.LWComponentPeer");
             CPlatformWindow = Class.forName("sun.lwawt.macosx.CPlatformWindow");
-            CFNativeAction = Class.forName("sun.lwawt.macosx.CFRetainedResource.CFNativeAction");
+            CFNativeAction = Class.forName("sun.lwawt.macosx.CFRetainedResource$CFNativeAction");
             execute = CPlatformWindow.getMethod("execute", CFNativeAction);
             getPlatformWindow = LWComponentPeer.getMethod("getPlatformWindow");
         } catch (ClassNotFoundException | NoSuchMethodException ex) {
