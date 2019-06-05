@@ -9,6 +9,7 @@ import org.cef.browser.CefBrowser;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for easy of implementation.
@@ -33,19 +34,21 @@ public class JourneyBrowserView extends JComponent {
     private CefClient cefClient;
     private CefBrowser cefBrowser;
 
-    public JourneyBrowserView() throws Exception {
+    public JourneyBrowserView() throws InvocationTargetException, InterruptedException {
         this(getDefaultCEFArgs(), DEFAULT_SETTINGS, ABOUT_BLANK);
     }
 
-    public JourneyBrowserView(CefSettings cefSettings, String initialUrl) throws Exception {
+    public JourneyBrowserView(CefSettings cefSettings, String initialUrl)
+            throws InvocationTargetException, InterruptedException {
         this(getDefaultCEFArgs(), cefSettings, initialUrl);
     }
 
-    public JourneyBrowserView(String initialUrl) throws Exception {
+    public JourneyBrowserView(String initialUrl) throws InvocationTargetException, InterruptedException {
         this(getDefaultCEFArgs(), DEFAULT_SETTINGS, initialUrl);
     }
 
-    public JourneyBrowserView(String[] args, CefSettings cefSettings, String initialUrl) throws Exception {
+    public JourneyBrowserView(String[] args, CefSettings cefSettings, String initialUrl)
+            throws InvocationTargetException, InterruptedException {
         JourneyBrowserView.cefSettings = cefSettings;
         JourneyLoader.setup();
 
