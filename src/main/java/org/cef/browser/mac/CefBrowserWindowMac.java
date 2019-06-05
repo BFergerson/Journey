@@ -74,7 +74,7 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
         return result[0];
     }
 
-    static void run(long l) {
+    public static void run(long l) {
         System.out.println("Ran run: " + l);
         result[0] = l;
     }
