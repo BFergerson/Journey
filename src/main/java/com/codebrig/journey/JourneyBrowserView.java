@@ -3,10 +3,12 @@ package com.codebrig.journey;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
+import org.cef.OS;
 import org.cef.browser.CefBrowser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 /**
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for easy of implementation.
@@ -32,15 +34,15 @@ public class JourneyBrowserView extends JComponent {
     private CefBrowser cefBrowser;
 
     public JourneyBrowserView() throws Exception {
-        this(new String[0], DEFAULT_SETTINGS, ABOUT_BLANK);
+        this(getDefaultCEFArgs(), DEFAULT_SETTINGS, ABOUT_BLANK);
     }
 
     public JourneyBrowserView(CefSettings cefSettings, String initialUrl) throws Exception {
-        this(new String[0], cefSettings, initialUrl);
+        this(getDefaultCEFArgs(), cefSettings, initialUrl);
     }
 
     public JourneyBrowserView(String initialUrl) throws Exception {
-        this(new String[0], DEFAULT_SETTINGS, initialUrl);
+        this(getDefaultCEFArgs(), DEFAULT_SETTINGS, initialUrl);
     }
 
     public JourneyBrowserView(String[] args, CefSettings cefSettings, String initialUrl) throws Exception {
@@ -77,5 +79,24 @@ public class JourneyBrowserView extends JComponent {
 
     public CefBrowser getBrowser() {
         return cefBrowser;
+    }
+
+    private static String[] getDefaultCEFArgs() {
+        if (OS.isMacintosh()) {
+            File frameworkDirPath = new File(JourneyLoader.nativeDir,
+                    "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework");
+            File browserSubprocessPath = new File(JourneyLoader.nativeDir,
+                    "jcef_app.app/Contents/Frameworks/jcef Helper.app/Contents/MacOS/jcef Helper");
+            File resourcesDirPath = new File(JourneyLoader.nativeDir,
+                    "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources");
+            return new String[]{
+                    "--framework-dir-path=" + frameworkDirPath.getAbsolutePath(),
+                    "--browser-subprocess-path=" + browserSubprocessPath.getAbsolutePath(),
+                    "--resources-dir-path=" + resourcesDirPath.getAbsolutePath(),
+                    "--disable-gpu"
+            };
+        } else {
+            return new String[0];
+        }
     }
 }
