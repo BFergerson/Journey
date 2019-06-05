@@ -3,14 +3,15 @@ package org.cef.browser.mac;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
-import net.bytebuddy.matcher.ElementMatchers;
 import org.cef.browser.CefBrowserWindow;
 
 import java.awt.*;
 import java.awt.peer.ComponentPeer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
+@SuppressWarnings("unused")
 public class CefBrowserWindowMac implements CefBrowserWindow {
 
     private static long[] result;
@@ -54,8 +55,9 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
                 if (CPlatformWindow.isInstance(pWindow)) {
                     try {
                         DynamicType.Unloaded nativeActionRun = new ByteBuddy()
-                                .subclass(CFNativeAction)
-                                .method(ElementMatchers.named("run"))
+                                .subclass(Object.class)
+                                .implement(CFNativeAction)
+                                .defineMethod("run", void.class, Modifier.PUBLIC).withParameters(long.class)
                                 .intercept(MethodDelegation.to(CefBrowserWindowMac.class))
                                 .make();
                         execute.invoke(pWindow, nativeActionRun.load(getClass().getClassLoader())
