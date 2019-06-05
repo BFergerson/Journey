@@ -19,7 +19,6 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
     @Override
     @SuppressWarnings("unchecked")
     public long getWindowHandle(Component comp) {
-        System.out.println("got to getWindowHandle: " + comp);
         result = new long[1];
 
         Class LWComponentPeer;
@@ -70,12 +69,10 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
             }
             comp = comp.getParent();
         }
-        System.out.println("did result: " + result[0]);
         return result[0];
     }
 
     public static void run(long l) {
-        System.out.println("Ran run: " + l);
         result[0] = l;
     }
 }
