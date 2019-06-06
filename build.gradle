@@ -96,12 +96,15 @@ task initEnvironment {
                 (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))) {
             def linuxBuild = new File('natives/jcef-distrib-linux64.zip')
             linuxBuild.getParentFile().mkdirs()
+            def macintoshBuild = new File('natives/jcef-distrib-macintosh64.zip')
             def windows32Build = new File('natives/jcef-distrib-windows32.zip')
             def windows64Build = new File('natives/jcef-distrib-windows64.zip')
 
             println "Downloading CEF natives files for offline distribution"
             new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
                     .withInputStream { i -> linuxBuild.withOutputStream { it << i } }
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-macintosh64.zip")
+                    .withInputStream { i -> macintoshBuild.withOutputStream { it << i } }
             new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows32.zip")
                     .withInputStream { i -> windows32Build.withOutputStream { it << i } }
             new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows64.zip")
@@ -110,12 +113,14 @@ task initEnvironment {
 
             println "Unpacking CEF natives files for offline distribution"
             ant.unzip(src: linuxBuild.absolutePath, dest: linuxBuild.getParentFile().absolutePath, overwrite: "true")
+            ant.unzip(src: macintoshBuild.absolutePath, dest: macintoshBuild.getParentFile().absolutePath, overwrite: "true")
             ant.unzip(src: windows32Build.absolutePath, dest: windows32Build.getParentFile().absolutePath, overwrite: "true")
             ant.unzip(src: windows64Build.absolutePath, dest: windows64Build.getParentFile().absolutePath, overwrite: "true")
             println "Successfully unpacked CEF natives files for offline distribution"
 
             def resourcesDir = file('src/main/resources')
             new File(linuxBuild.getParentFile(), "linux64").renameTo(new File(resourcesDir, "linux64"))
+            new File(macintoshBuild.getParentFile(), "macosx64").renameTo(new File(resourcesDir, "macosx64"))
             new File(windows32Build.getParentFile(), "win32").renameTo(new File(resourcesDir, "win32"))
             new File(windows64Build.getParentFile(), "win64").renameTo(new File(resourcesDir, "win64"))
         }
