@@ -29,7 +29,7 @@ dependencies {
       //Journey tag scheme = {journeyVersion}:{cefMajorVersion}:{distributionMode}
       compile 'com.github.codebrig:journey:0.2.5-69-online'
 
-      //or use the offline version (includes native CEF files for all platforms)
+      //or use the offline version (includes native CEF files for all platforms; 200MB+)
       //compile 'com.github.codebrig:journey:0.2.5-69-offline'
 }
 ```
@@ -50,7 +50,7 @@ dependencies {
 	<artifactId>journey</artifactId>
 	<version>0.2.5-69-online</version>
 	
-	<!-- or use the offline version (includes native CEF files for all platforms) -->
+	<!-- or use the offline version (includes native CEF files for all platforms; 200MB+) -->
 	<!-- <version>0.2.5-69-offline</version> -->
 </dependency>
 ```
