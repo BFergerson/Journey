@@ -26,7 +26,7 @@ public class JourneyBrowserView extends JComponent {
     static {
         DEFAULT_SETTINGS.windowless_rendering_enabled = false;
         DEFAULT_SETTINGS.log_file = String.format("%s/journey-%s/debug.log",
-                System.getProperty("java.io.tmpdir"), JourneyLoader.VERSION);
+                (OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"), JourneyLoader.VERSION);
     }
 
     private static CefSettings cefSettings;

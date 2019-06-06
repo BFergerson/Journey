@@ -46,7 +46,8 @@ public class JourneyLoader {
             }
             JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, JCEF_VERSION);
             if (nativeDir == null) {
-                nativeDir = new File(System.getProperty("java.io.tmpdir"), "journey-" + VERSION);
+                nativeDir = new File((OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"),
+                        "journey-" + VERSION);
             }
             if (!nativeDir.exists()) nativeDir.mkdirs();
             JOURNEY_LOADER_LISTENER.usingNativeDirectory(nativeDir);
