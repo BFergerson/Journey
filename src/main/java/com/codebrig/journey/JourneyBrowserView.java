@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for easy of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.5
+ * @version 0.2.6
  * @since 0.1.1
  */
 public class JourneyBrowserView extends JComponent {
