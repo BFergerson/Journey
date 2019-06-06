@@ -140,7 +140,6 @@ task checkoutJCEF {
             chromiumMajorVersion = System.getenv("VERSION").split("-")[1]
         }
 
-
         def p = ("git checkout " + jcefCommit[chromiumMajorVersion]).execute(null, new File("jcef").absoluteFile)
         p.waitFor()
     }
