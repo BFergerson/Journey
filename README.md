@@ -26,8 +26,9 @@ repositories {
 }
 
 dependencies {
+      //tag = journey:{journeyVersion}:{cefMajorVersion}:{distributionMode}
       compile 'com.github.codebrig:journey:0.2.5-69-online'
-      
+
       //or use the offline version (includes native CEF files for all platforms)
       //compile 'com.github.codebrig:journey:0.2.5-69-offline'
 }
@@ -44,6 +45,7 @@ dependencies {
 </repositories>
 
 <dependency>
+	<!-- tag = journey:{journeyVersion}:{cefMajorVersion}:{distributionMode} -->
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
 	<version>0.2.5-69-online</version>
