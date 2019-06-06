@@ -86,11 +86,11 @@ public class JourneyBrowserView extends JComponent {
 
     private static String[] getDefaultCEFArgs() {
         if (OS.isMacintosh()) {
-            File frameworkDirPath = new File(JourneyLoader.nativeDir,
+            File frameworkDirPath = new File(JourneyLoader.NATIVE_DIRECTORY,
                     "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework");
-            File browserSubprocessPath = new File(JourneyLoader.nativeDir,
+            File browserSubprocessPath = new File(JourneyLoader.NATIVE_DIRECTORY,
                     "jcef_app.app/Contents/Frameworks/jcef Helper.app/Contents/MacOS/jcef Helper");
-            File resourcesDirPath = new File(JourneyLoader.nativeDir,
+            File resourcesDirPath = new File(JourneyLoader.NATIVE_DIRECTORY,
                     "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources");
             return new String[]{
                     "--framework-dir-path=" + frameworkDirPath.getAbsolutePath(),

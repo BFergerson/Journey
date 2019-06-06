@@ -33,7 +33,7 @@ public class JourneyLoader {
     public static final String JCEF_VERSION = BUILD.getString("jcef_version");
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
-    public static File nativeDir;
+    public static File NATIVE_DIRECTORY;
 
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
     };
@@ -45,12 +45,12 @@ public class JourneyLoader {
                 return;
             }
             JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, JCEF_VERSION);
-            if (nativeDir == null) {
-                nativeDir = new File((OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"),
+            if (NATIVE_DIRECTORY == null) {
+                NATIVE_DIRECTORY = new File((OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"),
                         "journey-" + VERSION);
             }
-            if (!nativeDir.exists()) nativeDir.mkdirs();
-            JOURNEY_LOADER_LISTENER.usingNativeDirectory(nativeDir);
+            if (!NATIVE_DIRECTORY.exists()) NATIVE_DIRECTORY.mkdirs();
+            JOURNEY_LOADER_LISTENER.usingNativeDirectory(NATIVE_DIRECTORY);
 
             String jcefName;
             String providerName;
@@ -86,7 +86,7 @@ public class JourneyLoader {
 
             int chromiumMajorVersion = Integer.parseInt(JCEF_VERSION.split("\\.")[0]);
             String jcefDistribFile = "jcef-distrib-" + providerName.replace("_", "") + ".zip";
-            File localNative = new File(nativeDir, jcefDistribFile);
+            File localNative = new File(NATIVE_DIRECTORY, jcefDistribFile);
             if ("online".equals(MODE) && !localNative.exists()) {
                 JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
                 Files.copy(new URL(String.format("%s/releases/download/%s-%s-online/%s",
@@ -95,7 +95,7 @@ public class JourneyLoader {
                 JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
             }
 
-            if (!new File(nativeDir, "icudtl.dat").exists() && !new File(nativeDir, "jcef_app.app").exists()) {
+            if (!new File(NATIVE_DIRECTORY, "icudtl.dat").exists() && !new File(NATIVE_DIRECTORY, "jcef_app.app").exists()) {
                 JOURNEY_LOADER_LISTENER.extractingNativeCEFFiles();
                 String libLocation = String.format("%s/bin/", jcefName);
                 if (OS.isLinux() || OS.isWindows()) {
@@ -114,7 +114,7 @@ public class JourneyLoader {
                             continue;
                         }
 
-                        File entryDestination = new File(nativeDir, entry.getName().replace(libLocation, ""));
+                        File entryDestination = new File(NATIVE_DIRECTORY, entry.getName().replace(libLocation, ""));
                         if (entry.isDirectory()) {
                             entryDestination.mkdirs();
                         } else {
@@ -135,11 +135,11 @@ public class JourneyLoader {
 
             JOURNEY_LOADER_LISTENER.loadingNativeCEFFiles();
             if (OS.isWindows()) {
-                loadWindows(nativeDir);
+                loadWindows(NATIVE_DIRECTORY);
             } else if (OS.isLinux()) {
-                loadLinux(nativeDir);
+                loadLinux(NATIVE_DIRECTORY);
             } else if (OS.isMacintosh()) {
-                loadMacintosh(nativeDir);
+                loadMacintosh(NATIVE_DIRECTORY);
             }
             JOURNEY_LOADER_LISTENER.loadedNativeCEFFiles();
 
