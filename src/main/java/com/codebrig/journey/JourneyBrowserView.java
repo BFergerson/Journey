@@ -34,16 +34,16 @@ public class JourneyBrowserView extends JComponent {
     private CefBrowser cefBrowser;
 
     public JourneyBrowserView() throws InvocationTargetException, InterruptedException {
-        this(getDefaultCEFArgs(), DEFAULT_SETTINGS, ABOUT_BLANK);
+        this(getDefaultCEFArguments(), DEFAULT_SETTINGS, ABOUT_BLANK);
     }
 
     public JourneyBrowserView(CefSettings cefSettings, String initialUrl)
             throws InvocationTargetException, InterruptedException {
-        this(getDefaultCEFArgs(), cefSettings, initialUrl);
+        this(getDefaultCEFArguments(), cefSettings, initialUrl);
     }
 
     public JourneyBrowserView(String initialUrl) throws InvocationTargetException, InterruptedException {
-        this(getDefaultCEFArgs(), DEFAULT_SETTINGS, initialUrl);
+        this(getDefaultCEFArguments(), DEFAULT_SETTINGS, initialUrl);
     }
 
     public JourneyBrowserView(String[] args, CefSettings cefSettings, String initialUrl)
@@ -83,7 +83,7 @@ public class JourneyBrowserView extends JComponent {
         return cefBrowser;
     }
 
-    private static String[] getDefaultCEFArgs() {
+    private static String[] getDefaultCEFArguments() {
         if (OS.isMacintosh()) {
             File frameworkDirPath = new File(JourneyLoader.NATIVE_DIRECTORY,
                     "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework");
