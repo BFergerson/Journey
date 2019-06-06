@@ -38,15 +38,19 @@ dependencies {
 task createProperties(dependsOn: processResources) {
     doLast {
         def mode = "online"
+        def chromiumMajorVersion = "73"
         if (System.getenv("TRAVIS_BRANCH") != null) {
+            chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
             mode = System.getenv("TRAVIS_BRANCH").split("-")[2]
         } else if (System.getenv("VERSION") != null) {
+            chromiumMajorVersion = System.getenv("VERSION").split("-")[1]
             mode = System.getenv("VERSION").split("-")[2]
         }
 
         new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
+            p['jcef_version'] = project.jcefVersion[chromiumMajorVersion].toString()
             p['build_date'] = new Date().toInstant().toString()
             p['mode'] = mode
             p['project_url'] = project.projectUrl.toString()

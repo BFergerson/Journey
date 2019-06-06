@@ -30,6 +30,7 @@ public class JourneyLoader {
 
     private static final ResourceBundle BUILD = ResourceBundle.getBundle("journey_build");
     public static final String VERSION = BUILD.getString("version");
+    public static final String JCEF_VERSION = BUILD.getString("jcef_version");
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
     public static File nativeDir;
@@ -43,7 +44,7 @@ public class JourneyLoader {
             if (loaderSetup.getAndSet(true)) {
                 return;
             }
-            JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION);
+            JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, JCEF_VERSION);
             if (nativeDir == null) {
                 nativeDir = new File(System.getProperty("java.io.tmpdir"), "journey-" + VERSION);
             }
@@ -52,7 +53,6 @@ public class JourneyLoader {
 
             String jcefName;
             String providerName;
-            int chromiumMajorVersion;
             JOURNEY_LOADER_LISTENER.determiningOS();
             if (OS.isWindows()) {
                 boolean is64bit;
@@ -70,23 +70,20 @@ public class JourneyLoader {
                     jcefName = "win32";
                     JOURNEY_LOADER_LISTENER.determinedOS("windows", 64);
                 }
-                chromiumMajorVersion = 73;
             } else if (OS.isLinux()) {
                 providerName = "linux_64";
                 jcefName = "linux64";
                 JOURNEY_LOADER_LISTENER.determinedOS("linux", 64);
-                chromiumMajorVersion = 67;
             } else if (OS.isMacintosh()) {
                 providerName = "macintosh_64";
                 jcefName = "macosx64";
                 JOURNEY_LOADER_LISTENER.determinedOS("macintosh", 64);
-                chromiumMajorVersion = 69;
             } else {
                 JOURNEY_LOADER_LISTENER.determinedOS("unsupported", -1);
                 throw new UnsupportedOperationException("OS is not currently supported");
             }
-            JOURNEY_LOADER_LISTENER.usingChromiumVersion(chromiumMajorVersion);
 
+            int chromiumMajorVersion = Integer.parseInt(JCEF_VERSION.split("\\.")[0]);
             String jcefDistribFile = "jcef-distrib-" + providerName.replace("_", "") + ".zip";
             File localNative = new File(nativeDir, jcefDistribFile);
             if ("online".equals(MODE) && !localNative.exists()) {
@@ -160,15 +157,13 @@ public class JourneyLoader {
     }
 
     public static abstract class JourneyLoaderListener {
-        public abstract void journeyLoaderStarted(String version);
+        public abstract void journeyLoaderStarted(String journeyVersion, String jcefVersion);
 
         public abstract void usingNativeDirectory(File nativeDir);
 
         public abstract void determiningOS();
 
         public abstract void determinedOS(String os, int bits);
-
-        public abstract void usingChromiumVersion(int chromiumVersion);
 
         public abstract void downloadingNativeCEFFiles();
 
@@ -187,7 +182,7 @@ public class JourneyLoader {
 
     public static abstract class JourneyLoaderAdapter extends JourneyLoaderListener {
         @Override
-        public void journeyLoaderStarted(String version) {
+        public void journeyLoaderStarted(String journeyVersion, String jcefVersion) {
         }
 
         @Override
@@ -200,10 +195,6 @@ public class JourneyLoader {
 
         @Override
         public void determinedOS(String os, int bits) {
-        }
-
-        @Override
-        public void usingChromiumVersion(int chromiumVersion) {
         }
 
         @Override
@@ -236,11 +227,9 @@ public class JourneyLoader {
     }
 
     private static void loadLinux(File nativeDir) throws IllegalAccessException {
-        String javaHome = System.getProperty("java.home");
-        File amd64 = new File(javaHome + File.separator + "lib/amd64");
-
-        System.setProperty("java.library.path", System.getProperty("java.library.path") + ":" + amd64.getAbsolutePath()
-                + ":" + nativeDir.getAbsolutePath());
+        System.setProperty("java.library.path", System.getProperty("java.library.path") + ":" +
+                new File(System.getProperty("java.home"), "lib/amd64").getAbsolutePath() + ":" +
+                nativeDir.getAbsolutePath());
         try {
             Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
             fieldSysPath.setAccessible(true);
