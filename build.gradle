@@ -32,7 +32,7 @@ dependencies {
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/jcef_build/native/Release', include: '*.jar')
-    runtime group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.13'
+    provided group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.13'
 }
 
 task createProperties(dependsOn: processResources) {
