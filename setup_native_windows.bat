@@ -1,10 +1,10 @@
 SET PATH=%JAVA_HOME%;%PATH%
 
 git clone https://bitbucket.org/chromiumembedded/java-cef.git jcef
-cd jcef
-git checkout 045302f591e53057a011b4b1df1d26fbee15e35d
+./gradlew checkoutJCEF
 
 echo "Running cmake..."
+cd jcef
 mkdir jcef_build
 cd jcef_build
 cmake -G "%generatorName%" ..
