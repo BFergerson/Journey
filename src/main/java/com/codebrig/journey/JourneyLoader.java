@@ -94,9 +94,12 @@ public class JourneyLoader {
                 JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
             }
 
-            if (!new File(nativeDir, "icudtl.dat").exists()) {
+            if (!new File(nativeDir, "icudtl.dat").exists() && !new File(nativeDir, "jcef_app.app").exists()) {
                 JOURNEY_LOADER_LISTENER.extractingNativeCEFFiles();
-                String libLocation = String.format("%s/bin/lib/%s/", jcefName, jcefName);
+                String libLocation = String.format("%s/bin/", jcefName);
+                if (OS.isLinux() || OS.isWindows()) {
+                    libLocation += String.format("lib/%s/", jcefName);
+                }
                 if ("offline".equals(MODE)) {
                     //extract from self .jar
                     localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI());
