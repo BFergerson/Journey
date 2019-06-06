@@ -33,7 +33,8 @@ public class JourneyLoader {
     public static final String JCEF_VERSION = BUILD.getString("jcef_version");
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
-    public static File NATIVE_DIRECTORY;
+    public static File NATIVE_DIRECTORY = new File((OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"),
+            "journey-" + VERSION);
 
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
     };
@@ -45,10 +46,6 @@ public class JourneyLoader {
                 return;
             }
             JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, JCEF_VERSION);
-            if (NATIVE_DIRECTORY == null) {
-                NATIVE_DIRECTORY = new File((OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"),
-                        "journey-" + VERSION);
-            }
             if (!NATIVE_DIRECTORY.exists()) NATIVE_DIRECTORY.mkdirs();
             JOURNEY_LOADER_LISTENER.usingNativeDirectory(NATIVE_DIRECTORY);
 
