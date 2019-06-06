@@ -9,6 +9,7 @@ No attempt has been made to go feature-to-feature with JxBrowser. Journey namely
 Issues/PRs are welcome for increasing the capability of Journey to be on par with that of JxBrowser.
 
 ### Features
+ - macOS (64bit) support
  - Linux (64bit) support
  - Windows (32bit/64bit) support
  - Release distributions (CDN via GitHub)
