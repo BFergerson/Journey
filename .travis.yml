@@ -23,7 +23,7 @@ deploy:
   provider: releases
   api_key: $GH_TOKEN
   file:
-  - /home/travis/build/CodeBrig/Journey/build/libs/journey-browser-0.2.11.jar
+  - /home/travis/build/CodeBrig/Journey/build/libs/journey-browser-0.2.12.jar
   - /home/travis/build/CodeBrig/Journey/jcef/binary_distrib/jcef-distrib-linux64.zip
   - /Users/travis/build/CodeBrig/Journey/jcef/binary_distrib/jcef-distrib-macintosh64.zip
   skip_cleanup: true
