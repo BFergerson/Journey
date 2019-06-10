@@ -54,7 +54,6 @@ task createProperties(dependsOn: processResources) {
         new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
-            p['jcef_version'] = project.jcefVersion[chromiumMajorVersion].toString()
             p['build_date'] = new Date().toInstant().toString()
             p['mode'] = mode
             p['project_url'] = project.projectUrl.toString()

@@ -28,12 +28,11 @@ public class JourneyLoader extends URLClassLoader {
 
     private static final ResourceBundle BUILD = ResourceBundle.getBundle("journey_build");
     public static final String VERSION = BUILD.getString("version");
-    public static final String JCEF_VERSION = BUILD.getString("jcef_version");
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
     public static File NATIVE_DIRECTORY = new File((System.getProperty("os.name").toLowerCase().startsWith("mac"))
             ? "/tmp" : System.getProperty("java.io.tmpdir"),
-            "journey-" + Integer.parseInt(JCEF_VERSION.split("\\.")[0]));
+            "journey-" + (System.getProperty("os.name").toLowerCase().startsWith("mac") ? "69" : "73"));
 
     private static JourneyLoader JOURNEY_CLASS_LOADER;
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
@@ -54,7 +53,14 @@ public class JourneyLoader extends URLClassLoader {
             if (loaderSetup.getAndSet(true)) {
                 return;
             }
-            JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, JCEF_VERSION);
+
+            String jcefVersion;
+            if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
+                jcefVersion = "69.0.3497.100";
+            } else {
+                jcefVersion = "73.1.11.215";
+            }
+            JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, jcefVersion);
             if (!NATIVE_DIRECTORY.exists()) NATIVE_DIRECTORY.mkdirs();
             JOURNEY_LOADER_LISTENER.usingNativeDirectory(NATIVE_DIRECTORY);
 
@@ -91,7 +97,7 @@ public class JourneyLoader extends URLClassLoader {
                 throw new UnsupportedOperationException("OS is not currently supported");
             }
 
-            int chromiumMajorVersion = Integer.parseInt(JCEF_VERSION.split("\\.")[0]);
+            int chromiumMajorVersion = Integer.parseInt(jcefVersion.split("\\.")[0]);
             String jcefDistribFile = "jcef-distrib-" + providerName.replace("_", "") + ".zip";
             File localNative = new File(NATIVE_DIRECTORY, jcefDistribFile);
             if ("online".equals(MODE) && !localNative.exists()) {
