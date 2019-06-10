@@ -170,9 +170,19 @@ public class JourneyLoader extends URLClassLoader {
                     joglAllJar = new File(NATIVE_DIRECTORY, "jogl-all.jar");
                     jcefJar = new File(NATIVE_DIRECTORY, "jcef.jar");
                 }
-                JOURNEY_CLASS_LOADER = new JourneyLoader(
-                        new URL[]{gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
-                        Thread.currentThread().getContextClassLoader());
+
+                File selfJar = new File(JourneyLoader.class.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI());
+                if (selfJar.exists() && selfJar.isFile()) {
+                    JOURNEY_CLASS_LOADER = new JourneyLoader(
+                            new URL[]{selfJar.toURL(), gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
+                            Thread.currentThread().getContextClassLoader());
+                    JOURNEY_CLASS_LOADER.loadJar(selfJar);
+                } else {
+                    JOURNEY_CLASS_LOADER = new JourneyLoader(
+                            new URL[]{gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
+                            Thread.currentThread().getContextClassLoader());
+                }
                 JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
                 JOURNEY_CLASS_LOADER.loadJar(jcefJar);
 //                journeyLoader.loadJar(joglAllJar);
