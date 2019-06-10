@@ -1,21 +1,18 @@
 package com.codebrig.journey;
 
-import org.cef.CefApp;
-import org.cef.OS;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -26,19 +23,30 @@ import java.util.zip.ZipFile;
  * @version 0.2.6
  * @since 0.1.1
  */
-public class JourneyLoader {
+@SuppressWarnings({"WeakerAccess", "unused", "JavaReflectionMemberAccess"})
+public class JourneyLoader extends URLClassLoader {
 
     private static final ResourceBundle BUILD = ResourceBundle.getBundle("journey_build");
     public static final String VERSION = BUILD.getString("version");
     public static final String JCEF_VERSION = BUILD.getString("jcef_version");
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
-    public static File NATIVE_DIRECTORY = new File((OS.isMacintosh()) ? "/tmp" : System.getProperty("java.io.tmpdir"),
-            "journey-" + VERSION);
+    public static File NATIVE_DIRECTORY = new File((System.getProperty("os.name").toLowerCase().startsWith("mac"))
+            ? "/tmp" : System.getProperty("java.io.tmpdir"), "journey-" + VERSION);
 
+    private static JourneyLoader JOURNEY_CLASS_LOADER;
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
     };
     private static final AtomicBoolean loaderSetup = new AtomicBoolean();
+
+    public static void setJourneyLoaderListener(JourneyLoaderListener listener) {
+        JOURNEY_LOADER_LISTENER = Objects.requireNonNull(listener);
+    }
+
+    public static JourneyLoader getJourneyClassLoader() {
+        setup();
+        return JOURNEY_CLASS_LOADER;
+    }
 
     public static void setup() throws RuntimeException {
         try {
@@ -52,9 +60,10 @@ public class JourneyLoader {
             String jcefName;
             String providerName;
             JOURNEY_LOADER_LISTENER.determiningOS();
-            if (OS.isWindows()) {
+            String osName = System.getProperty("os.name");
+            if (osName.toLowerCase().startsWith("windows")) {
                 boolean is64bit;
-                if (System.getProperty("os.name").contains("Windows")) {
+                if (osName.contains("Windows")) {
                     is64bit = (System.getenv("ProgramFiles(x86)") != null);
                 } else {
                     is64bit = (System.getProperty("os.arch").contains("64"));
@@ -68,11 +77,11 @@ public class JourneyLoader {
                     jcefName = "win32";
                     JOURNEY_LOADER_LISTENER.determinedOS("windows", 64);
                 }
-            } else if (OS.isLinux()) {
+            } else if (osName.toLowerCase().startsWith("linux")) {
                 providerName = "linux_64";
                 jcefName = "linux64";
                 JOURNEY_LOADER_LISTENER.determinedOS("linux", 64);
-            } else if (OS.isMacintosh()) {
+            } else if (osName.toLowerCase().startsWith("mac")) {
                 providerName = "macintosh_64";
                 jcefName = "macosx64";
                 JOURNEY_LOADER_LISTENER.determinedOS("macintosh", 64);
@@ -87,31 +96,37 @@ public class JourneyLoader {
             if ("online".equals(MODE) && !localNative.exists()) {
                 JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
                 Files.copy(new URL(String.format("%s/releases/download/%s-%s-online/%s",
-                        PROJECT_URL, VERSION, chromiumMajorVersion, jcefDistribFile)).openStream(), localNative.toPath(),
-                        StandardCopyOption.REPLACE_EXISTING);
+                        PROJECT_URL, VERSION, chromiumMajorVersion, jcefDistribFile)).openStream(),
+                        localNative.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
             }
 
-            if (!new File(NATIVE_DIRECTORY, "icudtl.dat").exists() && !new File(NATIVE_DIRECTORY, "jcef_app.app").exists()) {
+            if (!new File(NATIVE_DIRECTORY, "icudtl.dat").exists()
+                    && !new File(NATIVE_DIRECTORY, "jcef_app.app").exists()) {
                 JOURNEY_LOADER_LISTENER.extractingNativeCEFFiles();
                 String libLocation = String.format("%s/bin/", jcefName);
-                if (OS.isLinux() || OS.isWindows()) {
+                if (osName.toLowerCase().startsWith("linux") || osName.toLowerCase().startsWith("windows")) {
                     libLocation += String.format("lib/%s/", jcefName);
                 }
                 if ("offline".equals(MODE)) {
                     //extract from self .jar
-                    localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+                    localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource()
+                            .getLocation().toURI());
                 }
 
                 try (ZipFile zipFile = new ZipFile(localNative)) {
                     Enumeration<? extends ZipEntry> entries = zipFile.entries();
                     while (entries.hasMoreElements()) {
                         ZipEntry entry = entries.nextElement();
-                        if (!entry.getName().startsWith(libLocation)) {
+                        if (!entry.getName().startsWith(libLocation) && !entry.getName().endsWith(".jar")) {
                             continue;
                         }
 
-                        File entryDestination = new File(NATIVE_DIRECTORY, entry.getName().replace(libLocation, ""));
+                        String filename = entry.getName().replace(libLocation, "");
+                        if (filename.endsWith(".jar")) {
+                            filename = filename.substring(filename.lastIndexOf("/") + 1);
+                        }
+                        File entryDestination = new File(NATIVE_DIRECTORY, filename);
                         if (entry.isDirectory()) {
                             entryDestination.mkdirs();
                         } else {
@@ -131,30 +146,68 @@ public class JourneyLoader {
             JOURNEY_LOADER_LISTENER.extractedNativeCEFFiles();
 
             JOURNEY_LOADER_LISTENER.loadingNativeCEFFiles();
-            if (OS.isWindows()) {
+            if (osName.toLowerCase().startsWith("windows")) {
                 loadWindows(NATIVE_DIRECTORY);
-            } else if (OS.isLinux()) {
+            } else if (osName.toLowerCase().startsWith("linux")) {
                 loadLinux(NATIVE_DIRECTORY);
-            } else if (OS.isMacintosh()) {
+            } else if (osName.toLowerCase().startsWith("mac")) {
                 loadMacintosh(NATIVE_DIRECTORY);
             }
             JOURNEY_LOADER_LISTENER.loadedNativeCEFFiles();
 
+            JOURNEY_LOADER_LISTENER.loadingJCEF();
+            if ("online".equals(MODE)) {
+                //load JCEF into system classloader
+                File gluegenRtJar = new File(NATIVE_DIRECTORY, "gluegen-rt.jar");
+                File joglAllJar = new File(NATIVE_DIRECTORY, "jogl-all.jar");
+                File jcefJar = new File(NATIVE_DIRECTORY, "jcef.jar");
+                JOURNEY_CLASS_LOADER = new JourneyLoader(
+                        new URL[]{gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
+                        Thread.currentThread().getContextClassLoader());
+                JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
+                JOURNEY_CLASS_LOADER.loadJar(jcefJar);
+                //journeyLoader.loadJar(joglAllJar);
+            }
             if (chromiumMajorVersion >= 73) {
-                Method method = CefApp.class.getMethod("startup");
+                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
                 method.invoke(null);
             } else if (chromiumMajorVersion >= 69) {
-                Method method = CefApp.class.getMethod("initXlibForMultithreading");
+                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp")
+                        .getMethod("initXlibForMultithreading");
                 method.invoke(null);
             }
+            JOURNEY_LOADER_LISTENER.loadedJCEF();
             JOURNEY_LOADER_LISTENER.journeyLoaderComplete();
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public static void setJourneyLoaderListener(JourneyLoaderListener listener) {
-        JOURNEY_LOADER_LISTENER = Objects.requireNonNull(listener);
+    public JourneyLoader(URL[] urls, ClassLoader classLoader) {
+        super(urls, classLoader);
+    }
+
+    private void loadJar(File file) throws IOException {
+        JarFile jarFile = new JarFile(file);
+        Enumeration<JarEntry> entrys = jarFile.entries();
+        while (entrys.hasMoreElements()) {
+            JarEntry jarEntry = entrys.nextElement();
+            String classFileName = jarEntry.getName();
+            if (classFileName.endsWith(".class")) {
+                classFileName = classFileName.replace("/", ".");
+                String className = classFileName.substring(0, classFileName.lastIndexOf("."));
+                loadClass(className);
+            }
+        }
+    }
+
+    @Override
+    public Class<?> loadClass(String s) {
+        try {
+            return super.loadClass(s);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public static abstract class JourneyLoaderListener {
@@ -177,6 +230,10 @@ public class JourneyLoader {
         public abstract void loadingNativeCEFFiles();
 
         public abstract void loadedNativeCEFFiles();
+
+        public abstract void loadingJCEF();
+
+        public abstract void loadedJCEF();
 
         public abstract void journeyLoaderComplete();
     }
@@ -220,6 +277,14 @@ public class JourneyLoader {
 
         @Override
         public void loadedNativeCEFFiles() {
+        }
+
+        @Override
+        public void loadingJCEF() {
+        }
+
+        @Override
+        public void loadedJCEF() {
         }
 
         @Override
