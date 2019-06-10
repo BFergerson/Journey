@@ -124,7 +124,7 @@ public class JourneyLoader extends URLClassLoader {
                         }
 
                         String filename = entry.getName().replace(libLocation, "");
-                        if (filename.endsWith(".jar")) {
+                        if (!osName.toLowerCase().startsWith("mac") && filename.endsWith(".jar")) {
                             filename = filename.substring(filename.lastIndexOf("/") + 1);
                         }
                         File entryDestination = new File(NATIVE_DIRECTORY, filename);
@@ -159,24 +159,34 @@ public class JourneyLoader extends URLClassLoader {
             JOURNEY_LOADER_LISTENER.loadingJCEF();
             if ("online".equals(MODE)) {
                 //load JCEF into system classloader
-                File gluegenRtJar = new File(NATIVE_DIRECTORY, "gluegen-rt.jar");
-                File joglAllJar = new File(NATIVE_DIRECTORY, "jogl-all.jar");
-                File jcefJar = new File(NATIVE_DIRECTORY, "jcef.jar");
+                File gluegenRtJar;
+                File joglAllJar;
+                File jcefJar;
+                if (osName.toLowerCase().startsWith("mac")) {
+                    gluegenRtJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/gluegen-rt.jar");
+                    joglAllJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/jogl-all.jar");
+                    jcefJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/jcef.jar");
+                } else {
+                    gluegenRtJar = new File(NATIVE_DIRECTORY, "gluegen-rt.jar");
+                    joglAllJar = new File(NATIVE_DIRECTORY, "jogl-all.jar");
+                    jcefJar = new File(NATIVE_DIRECTORY, "jcef.jar");
+                }
                 JOURNEY_CLASS_LOADER = new JourneyLoader(
                         new URL[]{gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
                         Thread.currentThread().getContextClassLoader());
                 JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
                 JOURNEY_CLASS_LOADER.loadJar(jcefJar);
-                //journeyLoader.loadJar(joglAllJar);
+//                journeyLoader.loadJar(joglAllJar);
             }
             if (chromiumMajorVersion >= 73) {
                 Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
                 method.invoke(null);
-            } else if (chromiumMajorVersion >= 69) {
-                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp")
-                        .getMethod("initXlibForMultithreading");
-                method.invoke(null);
             }
+//            else if (chromiumMajorVersion >= 69) {
+//                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp")
+//                        .getMethod("initXlibForMultithreading");
+//                method.invoke(null);
+//            }
             JOURNEY_LOADER_LISTENER.loadedJCEF();
             JOURNEY_LOADER_LISTENER.journeyLoaderComplete();
         } catch (Throwable ex) {
