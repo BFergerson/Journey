@@ -33,7 +33,7 @@ public class JourneyLoader extends URLClassLoader {
     public static final String PROJECT_URL = BUILD.getString("project_url");
     public static File NATIVE_DIRECTORY = new File((System.getProperty("os.name").toLowerCase().startsWith("mac"))
             ? "/tmp" : System.getProperty("java.io.tmpdir"),
-            "journey-" + VERSION + "-" + Integer.parseInt(JCEF_VERSION.split("\\.")[0]));
+            "journey-" + Integer.parseInt(JCEF_VERSION.split("\\.")[0]));
 
     private static JourneyLoader JOURNEY_CLASS_LOADER;
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
