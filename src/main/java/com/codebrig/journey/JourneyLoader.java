@@ -20,7 +20,7 @@ import java.util.zip.ZipFile;
  * Downloads and loads the necessary CEF files for the current OS.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.6
+ * @version 0.2.7
  * @since 0.1.1
  */
 @SuppressWarnings({"WeakerAccess", "unused", "JavaReflectionMemberAccess"})
