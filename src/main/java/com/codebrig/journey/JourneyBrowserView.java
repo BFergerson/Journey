@@ -60,7 +60,7 @@ public class JourneyBrowserView extends JComponent {
                         .call("getInstance", args, journeySettings.asCefSettings()).get();
                 cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
             }
-            cefClient = on(cefApp.createClient()).as(CefClientProxy.class, JourneyLoader.getJourneyClassLoader());
+            cefClient = cefApp.createClient();
             cefBrowser = cefClient.createBrowser(initialUrl, false, false);
             add(cefBrowser.getUIComponent(), "Center");
         } else {
@@ -70,7 +70,7 @@ public class JourneyBrowserView extends JComponent {
                             .call("getInstance", args, journeySettings.asCefSettings()).get();
                     cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
                 }
-                cefClient = on(cefApp.createClient()).as(CefClientProxy.class, JourneyLoader.getJourneyClassLoader());
+                cefClient = cefApp.createClient();
                 cefBrowser = cefClient.createBrowser(initialUrl, false, false);
                 add(cefBrowser.getUIComponent(), "Center");
             });
