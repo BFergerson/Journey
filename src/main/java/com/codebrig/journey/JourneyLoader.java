@@ -158,7 +158,6 @@ public class JourneyLoader extends URLClassLoader {
 
             JOURNEY_LOADER_LISTENER.loadingJCEF();
             if ("online".equals(MODE)) {
-                //load JCEF into system classloader
                 File gluegenRtJar;
                 File joglAllJar;
                 File jcefJar;
