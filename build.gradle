@@ -35,19 +35,15 @@ dependencies {
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/jcef_build/native/Release', include: '*.jar')
-    compileOnly group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.13'
     compileOnly 'com.github.bfergerson:joor:9933e481b0'
 }
 
 task createProperties(dependsOn: processResources) {
     doLast {
         def mode = "online"
-        def chromiumMajorVersion = "73"
         if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
-            chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
             mode = System.getenv("TRAVIS_BRANCH").split("-")[2]
         } else if (System.getenv("VERSION") != null && System.getenv("VERSION").split("-").length == 3) {
-            chromiumMajorVersion = System.getenv("VERSION").split("-")[1]
             mode = System.getenv("VERSION").split("-")[2]
         }
 
