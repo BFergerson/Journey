@@ -28,59 +28,59 @@ public class JourneySettings {
         return cefSettings;
     }
 
-    public String getBrowser_subprocess_path() {
+    public String getBrowserSubprocessPath() {
         return Reflect.on(cefSettings).get("browser_subprocess_path");
     }
 
-    public void setBrowser_subprocess_path(String browser_subprocess_path) {
+    public void setBrowserSubprocessPath(String browser_subprocess_path) {
         Reflect.on(cefSettings).set("browser_subprocess_path", browser_subprocess_path);
     }
 
-    public boolean isWindowless_rendering_enabled() {
+    public boolean isWindowlessRenderingEnabled() {
         return Reflect.on(cefSettings).get("windowless_rendering_enabled");
     }
 
-    public void setWindowless_rendering_enabled(boolean windowless_rendering_enabled) {
+    public void setWindowlessRenderingEnabled(boolean windowless_rendering_enabled) {
         Reflect.on(cefSettings).set("windowless_rendering_enabled", windowless_rendering_enabled);
     }
 
-    public boolean isCommand_line_args_disabled() {
+    public boolean isCommandLineArgsDisabled() {
         return Reflect.on(cefSettings).get("command_line_args_disabled");
     }
 
-    public void setCommand_line_args_disabled(boolean command_line_args_disabled) {
+    public void setCommandLineArgsDisabled(boolean command_line_args_disabled) {
         Reflect.on(cefSettings).set("command_line_args_disabled", command_line_args_disabled);
     }
 
-    public String getCache_path() {
+    public String getCachePath() {
         return Reflect.on(cefSettings).get("cache_path");
     }
 
-    public void setCache_path(String cache_path) {
+    public void setCachePath(String cache_path) {
         Reflect.on(cefSettings).set("cache_path", cache_path);
     }
 
-    public boolean isPersist_session_cookies() {
+    public boolean isPersistSessionCookies() {
         return Reflect.on(cefSettings).get("persist_session_cookies");
     }
 
-    public void setPersist_session_cookies(boolean persist_session_cookies) {
+    public void setPersistSessionCookies(boolean persist_session_cookies) {
         Reflect.on(cefSettings).set("persist_session_cookies", persist_session_cookies);
     }
 
-    public String getUser_agent() {
+    public String getUserAgent() {
         return Reflect.on(cefSettings).get("user_agent");
     }
 
-    public void setUser_agent(String user_agent) {
+    public void setUserAgent(String user_agent) {
         Reflect.on(cefSettings).set("user_agent", user_agent);
     }
 
-    public String getProduct_version() {
+    public String getProductVersion() {
         return Reflect.on(cefSettings).get("product_version");
     }
 
-    public void setProduct_version(String product_version) {
+    public void setProductVersion(String product_version) {
         Reflect.on(cefSettings).set("product_version", product_version);
     }
 
@@ -92,15 +92,15 @@ public class JourneySettings {
         Reflect.on(cefSettings).set("locale", locale);
     }
 
-    public String getLog_file() {
+    public String getLogFile() {
         return Reflect.on(cefSettings).get("log_file");
     }
 
-    public void setLog_file(String log_file) {
+    public void setLogFile(String log_file) {
         Reflect.on(cefSettings).set("log_file", log_file);
     }
 
-    public LogSeverity getLog_severity() {
+    public LogSeverity getLogSeverity() {
         Object realLogSeverity = Reflect.on(cefSettings).get("log_severity");
         if (realLogSeverity == null) {
             return null;
@@ -109,65 +109,65 @@ public class JourneySettings {
         }
     }
 
-    public void setLog_severity(LogSeverity log_severity) {
+    public void setLogSeverity(LogSeverity log_severity) {
         Object realLogSeverity = Reflect.on("org.cef.CefSettings$LogSeverity", JourneyLoader.getJourneyClassLoader())
                 .call("valueOf", log_severity.toString());
         Reflect.on(cefSettings).set("log_severity", realLogSeverity);
     }
 
-    public String getJavascript_flags() {
+    public String getJavascriptFlags() {
         return Reflect.on(cefSettings).get("javascript_flags");
     }
 
-    public void setJavascript_flags(String javascript_flags) {
+    public void setJavascriptFlags(String javascript_flags) {
         Reflect.on(cefSettings).set("javascript_flags", javascript_flags);
     }
 
-    public String getResources_dir_path() {
+    public String getResourcesDirPath() {
         return Reflect.on(cefSettings).get("resources_dir_path");
     }
 
-    public void setResources_dir_path(String resources_dir_path) {
+    public void setResourcesDirPath(String resources_dir_path) {
         Reflect.on(cefSettings).set("resources_dir_path", resources_dir_path);
     }
 
-    public String getLocales_dir_path() {
+    public String getLocalesDirPath() {
         return Reflect.on(cefSettings).get("locales_dir_path");
     }
 
-    public void setLocales_dir_path(String locales_dir_path) {
+    public void setLocalesDirPath(String locales_dir_path) {
         Reflect.on(cefSettings).set("locales_dir_path", locales_dir_path);
     }
 
-    public boolean isPack_loading_disabled() {
+    public boolean isPackLoadingDisabled() {
         return Reflect.on(cefSettings).get("pack_loading_disabled");
     }
 
-    public void setPack_loading_disabled(boolean pack_loading_disabled) {
+    public void setPackLoadingDisabled(boolean pack_loading_disabled) {
         Reflect.on(cefSettings).set("pack_loading_disabled", pack_loading_disabled);
     }
 
-    public int getRemote_debugging_port() {
+    public int getRemoteDebuggingPort() {
         return Reflect.on(cefSettings).get("remote_debugging_port");
     }
 
-    public void setRemote_debugging_port(int remote_debugging_port) {
+    public void setRemoteDebuggingPort(int remote_debugging_port) {
         Reflect.on(cefSettings).set("remote_debugging_port", remote_debugging_port);
     }
 
-    public int getUncaught_exception_stack_size() {
+    public int getUncaughtExceptionStackSize() {
         return Reflect.on(cefSettings).get("uncaught_exception_stack_size");
     }
 
-    public void setUncaught_exception_stack_size(int uncaught_exception_stack_size) {
+    public void setUncaughtExceptionStackSize(int uncaught_exception_stack_size) {
         Reflect.on(cefSettings).set("uncaught_exception_stack_size", uncaught_exception_stack_size);
     }
 
-    public boolean isIgnore_certificate_errors() {
+    public boolean isIgnoreCertificateErrors() {
         return Reflect.on(cefSettings).get("ignore_certificate_errors");
     }
 
-    public void setIgnore_certificate_errors(boolean ignore_certificate_errors) {
+    public void setIgnoreCertificateErrors(boolean ignore_certificate_errors) {
         Reflect.on(cefSettings).set("ignore_certificate_errors", ignore_certificate_errors);
     }
 

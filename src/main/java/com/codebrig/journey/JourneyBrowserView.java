@@ -27,8 +27,8 @@ public class JourneyBrowserView extends JComponent {
     static {
         JourneyLoader.setup();
         DEFAULT_SETTINGS = new JourneySettings();
-        DEFAULT_SETTINGS.setWindowless_rendering_enabled(false);
-        DEFAULT_SETTINGS.setLog_file(new File(JourneyLoader.NATIVE_DIRECTORY, "debug.log").getAbsolutePath());
+        DEFAULT_SETTINGS.setWindowlessRenderingEnabled(false);
+        DEFAULT_SETTINGS.setLogFile(new File(JourneyLoader.NATIVE_DIRECTORY, "debug.log").getAbsolutePath());
     }
 
     private static JourneySettings journeySettings;
