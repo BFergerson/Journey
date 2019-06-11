@@ -102,7 +102,7 @@ public class JourneyLoader extends URLClassLoader {
             File localNative = new File(NATIVE_DIRECTORY, jcefDistribFile);
             if ("online".equals(MODE) && !localNative.exists()) {
                 JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
-                Files.copy(new URL(String.format("%s/releases/download/%s-%s-online/%s",
+                Files.copy(new URL(String.format("%s/releases/download/%s-%s-assets/%s",
                         PROJECT_URL, VERSION, chromiumMajorVersion, jcefDistribFile)).openStream(),
                         localNative.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();

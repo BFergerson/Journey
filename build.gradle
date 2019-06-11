@@ -83,7 +83,7 @@ task initEnvironment {
         println "Downloading JCEF distribution"
         def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
         f.getParentFile().mkdirs()
-        new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
+        new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-linux64.zip")
                 .withInputStream { i -> f.withOutputStream { it << i } }
         println "Successfully downloaded JCEF distribution"
 
@@ -100,13 +100,13 @@ task initEnvironment {
             def windows64Build = new File('natives/jcef-distrib-windows64.zip')
 
             println "Downloading CEF natives files for offline distribution"
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-linux64.zip")
                     .withInputStream { i -> linuxBuild.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-macintosh64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-macintosh64.zip")
                     .withInputStream { i -> macintoshBuild.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows32.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-windows32.zip")
                     .withInputStream { i -> windows32Build.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-windows64.zip")
                     .withInputStream { i -> windows64Build.withOutputStream { it << i } }
             println "Successfully downloaded CEF natives files for offline distribution"
 
