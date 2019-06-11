@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 group 'com.codebrig'
-version '0.2.6'
+version '0.2.15'
 
 sourceCompatibility = 1.8
 archivesBaseName = 'journey-browser'
@@ -16,13 +16,16 @@ ext {
     ]
     jcefCommit = [
             '67': '1fda5d8f948670d08ef86bc4e8637b8581995ce9',
-            '69': '045302f591e53057a011b4b1df1d26fbee15e35d',
+            '69': '235e3a844380b72761643324e1d9b7713cae3b63',
             '73': 'd348788e3347fa4d2a421773463f7dd62da60991'
     ]
 }
 
 repositories {
     mavenCentral()
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 dependencies {
@@ -32,25 +35,21 @@ dependencies {
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/jcef_build/native/Release', include: '*.jar')
-    compileOnly group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.13'
+    compileOnly 'com.github.bfergerson:joor:9933e481b0'
 }
 
 task createProperties(dependsOn: processResources) {
     doLast {
         def mode = "online"
-        def chromiumMajorVersion = "73"
         if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
-            chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
             mode = System.getenv("TRAVIS_BRANCH").split("-")[2]
         } else if (System.getenv("VERSION") != null && System.getenv("VERSION").split("-").length == 3) {
-            chromiumMajorVersion = System.getenv("VERSION").split("-")[1]
             mode = System.getenv("VERSION").split("-")[2]
         }
 
         new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
             Properties p = new Properties()
             p['version'] = project.version.toString()
-            p['jcef_version'] = project.jcefVersion[chromiumMajorVersion].toString()
             p['build_date'] = new Date().toInstant().toString()
             p['mode'] = mode
             p['project_url'] = project.projectUrl.toString()
@@ -66,7 +65,7 @@ jar {
     dependsOn "initEnvironment"
 
     from {
-        (configurations.compile + configurations.compileOnly).collect { it.isDirectory() ? it : zipTree(it) }
+        (configurations.compileOnly).collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
@@ -84,7 +83,7 @@ task initEnvironment {
         println "Downloading JCEF distribution"
         def f = new File("jcef/binary_distrib", "jcef-distrib-linux64.zip")
         f.getParentFile().mkdirs()
-        new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
+        new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-linux64.zip")
                 .withInputStream { i -> f.withOutputStream { it << i } }
         println "Successfully downloaded JCEF distribution"
 
@@ -101,13 +100,13 @@ task initEnvironment {
             def windows64Build = new File('natives/jcef-distrib-windows64.zip')
 
             println "Downloading CEF natives files for offline distribution"
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-linux64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-linux64.zip")
                     .withInputStream { i -> linuxBuild.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-macintosh64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-macintosh64.zip")
                     .withInputStream { i -> macintoshBuild.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows32.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-windows32.zip")
                     .withInputStream { i -> windows32Build.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-online/jcef-distrib-windows64.zip")
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-windows64.zip")
                     .withInputStream { i -> windows64Build.withOutputStream { it << i } }
             println "Successfully downloaded CEF natives files for offline distribution"
 
@@ -133,6 +132,13 @@ task patchJCEF {
         println "Patching java-cef#317"
         def cefAppFile = file('jcef/java/org/cef/CefApp.java')
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
+
+        if (System.getenv("TRAVIS_OS_NAME") == "osx") {
+            //https://bitbucket.org/chromiumembedded/java-cef/issues/270
+            println "Patching java-cef#270"
+            def cefBrowserWindowMacFile = file('jcef/java/org/cef/browser/mac/CefBrowserWindowMac.java')
+            cefBrowserWindowMacFile.text = file('patches/jcef-270.txt').text
+        }
     }
 }
 
