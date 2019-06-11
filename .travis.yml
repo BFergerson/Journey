@@ -4,14 +4,16 @@ matrix:
   include:
   - os: linux
     dist: trusty
-#  - os: osx
-#    osx_image: xcode9.3
+  - os: osx
+    osx_image: xcode9.3
 
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ant ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install adoptopenjdk/openjdk/adoptopenjdk8 && java -version ; fi
 
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./setup_native_linux.sh ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./setup_native_mac.sh ; fi
 
 script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_native_linux.sh && ./gradlew build -x test ; fi
@@ -21,8 +23,9 @@ deploy:
   provider: releases
   api_key: $GH_TOKEN
   file:
-  - /home/travis/build/CodeBrig/Journey/build/libs/journey-browser-0.1.1.jar
+  - /home/travis/build/CodeBrig/Journey/build/libs/journey-browser-0.2.16.jar
   - /home/travis/build/CodeBrig/Journey/jcef/binary_distrib/jcef-distrib-linux64.zip
+  - /Users/travis/build/CodeBrig/Journey/jcef/binary_distrib/jcef-distrib-macintosh64.zip
   skip_cleanup: true
   on:
     tags: true

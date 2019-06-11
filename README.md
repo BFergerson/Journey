@@ -10,6 +10,7 @@ Issues/PRs are welcome for increasing the capability of Journey to be on par wit
 
 ### Features
  - Linux (64bit) support
+ - macOS (64bit) support
  - Windows (32bit/64bit) support
  - Release distributions (CDN via GitHub)
  - Online/offline CEF native file access
@@ -25,10 +26,10 @@ repositories {
 }
 
 dependencies {
-      compile 'com.github.codebrig:journey:0.1.1-online'
-      
-      //or use the offline version (includes native CEF files for all platforms)
-      //compile 'com.github.codebrig:journey:0.1.1-offline'
+      compile 'com.github.codebrig:journey:0.2.16-online'
+
+      //or use the offline version (includes native CEF files for all platforms; ~300MB)
+      //compile 'com.github.codebrig:journey:0.2.16-offline'
 }
 ```
 
@@ -45,10 +46,10 @@ dependencies {
 <dependency>
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
-	<version>0.1.1-online</version>
-	
-	<!-- or use the offline version (includes native CEF files for all platforms) -->
-	<!-- <version>0.1.1-offline</version> -->
+	<version>0.2.16-online</version>
+
+	<!-- or use the offline version (includes native CEF files for all platforms; ~300MB) -->
+	<!-- <version>0.2.16-offline</version> -->
 </dependency>
 ```
 
@@ -89,6 +90,7 @@ public class JourneyBrowser {
 
 ## Version Matrix
 
-| Build Date | Journey Version  | JCEF Version | JCEF Commit                              |
-|------------|------------------|--------------|------------------------------------------|
-| 2019-05-21 | 0.1.1           | 73.1.11.215  | [d348788e3347fa4d2a421773463f7dd62da60991](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) |
+| Build Date | Journey Version  | JCEF Version (Linux) | JCEF Version (macOS) | JCEF Version (Windows) |
+|------------|------------------|----------------------|----------------------|----------------------|
+| 2019-06-10 | [0.2.16](https://github.com/CodeBrig/Journey/releases/tag/0.2.16-online) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) |
+| 2019-05-21 | 0.1.1 | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) | n/a | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) |

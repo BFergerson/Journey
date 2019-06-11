@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-git clone https://bitbucket.org/chromiumembedded/java-cef.git jcef
-cd jcef
-git checkout d348788e3347fa4d2a421773463f7dd62da60991
+cd jcef/jcef_build/native/Release
+install_name_tool -change "@rpath/Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" "@loader_path/../Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" ./jcef_app.app/Contents/Java/libjcef.dylib
+install_name_tool -change "@rpath/Frameworks/Chromium Embedded Framework.framework/Chromium Embedded Framework" "@executable_path/../../../Chromium Embedded Framework.framework/Chromium Embedded Framework" "./jcef_app.app/Contents/Frameworks/jcef Helper.app/Contents/MacOS/jcef Helper"
+cd ../../../../
 
-mkdir jcef_build && cd jcef_build
-cmake -G "Unix Makefiles" -DPROJECT_ARCH="x86_64" -DCMAKE_BUILD_TYPE=Release ..
-make -j4
-#xcodebuild -project jcef.xcodeproj -configuration Release -target ALL_BUILD
-cd ../tools && ./make_distrib.sh macosx64
+cd jcef/tools && ./make_distrib.sh macosx64
+cd ../binary_distrib
+zip -r jcef-distrib-macintosh64.zip macosx64

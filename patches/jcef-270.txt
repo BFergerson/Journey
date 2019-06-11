@@ -1,0 +1,75 @@
+package org.cef.browser.mac;
+
+import org.cef.browser.CefBrowserWindow;
+
+import java.awt.*;
+import java.awt.peer.ComponentPeer;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+@SuppressWarnings("unused")
+public class CefBrowserWindowMac implements CefBrowserWindow {
+
+    private static long[] result;
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public long getWindowHandle(Component comp) {
+        result = new long[1];
+
+        Class LWComponentPeer;
+        Class CPlatformWindow;
+        Class CFNativeAction;
+        Method execute;
+        Method getPlatformWindow;
+        try {
+            LWComponentPeer = Class.forName("sun.lwawt.LWComponentPeer");
+            CPlatformWindow = Class.forName("sun.lwawt.macosx.CPlatformWindow");
+            CFNativeAction = Class.forName("sun.lwawt.macosx.CFRetainedResource$CFNativeAction");
+            execute = CPlatformWindow.getMethod("execute", CFNativeAction);
+            getPlatformWindow = LWComponentPeer.getMethod("getPlatformWindow");
+        } catch (ClassNotFoundException | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        while (comp != null) {
+            if (comp.isLightweight()) {
+                comp = comp.getParent();
+                continue;
+            }
+            @SuppressWarnings("deprecation")
+            ComponentPeer peer = comp.getPeer();
+
+            if (LWComponentPeer.isInstance(peer)) {
+                Object pWindow;
+                try {
+                    pWindow = getPlatformWindow.invoke(peer);
+                } catch (IllegalAccessException | InvocationTargetException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if (CPlatformWindow.isInstance(pWindow)) {
+                    try {
+                        Object nativeActionProxy = Proxy.newProxyInstance(getClass().getClassLoader(),
+                                new Class[]{CFNativeAction}, new InvocationHandler() {
+                                    @Override
+                                    public Object invoke(Object o, Method method, Object[] args) {
+                                        if ("run".equals(method.getName())) {
+                                            result[0] = (long) args[0];
+                                        }
+                                        return o;
+                                    }
+                                });
+                        execute.invoke(pWindow, nativeActionProxy);
+                    } catch (IllegalAccessException | InvocationTargetException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
+                }
+            }
+            comp = comp.getParent();
+        }
+        return result[0];
+    }
+}
