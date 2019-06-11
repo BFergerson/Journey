@@ -47,7 +47,7 @@ dependencies {
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
 	<version>0.2.16-online</version>
-	
+
 	<!-- or use the offline version (includes native CEF files for all platforms; ~300MB) -->
 	<!-- <version>0.2.16-offline</version> -->
 </dependency>
