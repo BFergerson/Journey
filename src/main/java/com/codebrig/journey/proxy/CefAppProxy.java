@@ -12,13 +12,7 @@ public interface CefAppProxy extends Reflect.ProxyObject {
         return o;
     };
 
-    void getVersion();
-
-    void getState();
-
     void dispose();
 
     CefClientProxy createClient();
-
-    void clearSchemeHandlerFactories();
 }
