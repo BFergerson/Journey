@@ -181,17 +181,11 @@ public class JourneyLoader extends URLClassLoader {
                         Thread.currentThread().getContextClassLoader());
                 JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
                 JOURNEY_CLASS_LOADER.loadJar(jcefJar);
-//                journeyLoader.loadJar(joglAllJar);
             }
             if (chromiumMajorVersion >= 73) {
                 Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
                 method.invoke(null);
             }
-//            else if (chromiumMajorVersion >= 69) {
-//                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp")
-//                        .getMethod("initXlibForMultithreading");
-//                method.invoke(null);
-//            }
             JOURNEY_LOADER_LISTENER.loadedJCEF();
             JOURNEY_LOADER_LISTENER.journeyLoaderComplete();
         } catch (Throwable ex) {
