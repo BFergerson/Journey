@@ -222,7 +222,11 @@ public class JourneyLoader extends URLClassLoader {
         try {
             return super.loadClass(s);
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
+            try {
+                return Class.forName(s);
+            } catch (ClassNotFoundException ex2) {
+                throw new RuntimeException(ex2);
+            }
         }
     }
 
