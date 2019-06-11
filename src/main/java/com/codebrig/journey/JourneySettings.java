@@ -1,5 +1,7 @@
 package com.codebrig.journey;
 
+import org.joor.Reflect;
+
 public class JourneySettings {
 
     public static Class CEF_SETTINGS_CLASS = JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefSettings");
@@ -17,22 +19,6 @@ public class JourneySettings {
         return cefSettings;
     }
 
-    private Object getFieldValue(String fieldName) {
-        try {
-            return CEF_SETTINGS_CLASS.getField(fieldName).get(cefSettings);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private void setFieldValue(String fieldName, Object value) {
-        try {
-            CEF_SETTINGS_CLASS.getField(fieldName).set(cefSettings, value);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
     //
 //    public String getBrowser_subprocess_path() {
 //        return (String) getFieldValue("browser_subprocess_path");
@@ -47,7 +33,7 @@ public class JourneySettings {
 //    }
 //
     public void setWindowless_rendering_enabled(boolean windowless_rendering_enabled) {
-        setFieldValue("windowless_rendering_enabled", windowless_rendering_enabled);
+        Reflect.on(cefSettings).set("windowless_rendering_enabled", windowless_rendering_enabled);
     }
 
     //
@@ -104,7 +90,7 @@ public class JourneySettings {
 //    }
 //
     public void setLog_file(String log_file) {
-        setFieldValue("log_file", log_file);
+        Reflect.on(cefSettings).set("log_file", log_file);
     }
 //
 //    public CefSettings.LogSeverity getLog_severity() {
