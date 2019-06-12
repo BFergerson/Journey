@@ -6,7 +6,7 @@ import org.joor.Reflect;
  * Journey local proxy for CefApp.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.16
+ * @version 0.2.17
  * @since 0.2.0
  */
 @SuppressWarnings("unused")
