@@ -99,6 +99,19 @@ export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/li
 java -cp "linux64/bin/*" tests.detailed.MainFrame
 ```
 
+### macOS
+```sh
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-69-online/jcef-distrib-macintosh64.zip
+unzip jcef-distrib-macintosh64.zip
+mv ./macosx64/bin/jcef_app.app .
+
+JAVA_PATH="./jcef_app.app/Contents/Java"
+FRAMEWORKS_PATH="./jcef_app.app/Contents/Frameworks"
+RESOURCES_DIR_PATH="$(pwd)/jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources"
+
+java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed.MainFrame --framework-dir-path=$FRAMEWORKS_PATH/Chromium\ Embedded\ Framework.framework --browser-subprocess-path=$FRAMEWORKS_PATH/jcef\ Helper.app/Contents/MacOS/jcef\ Helper --resources-dir-path="$RESOURCES_DIR_PATH" --disable-gpu
+```
+
 ## Version Matrix
 
 | Build Date | Journey Version  | JCEF Version (Linux) | JCEF Version (macOS) | JCEF Version (Windows) |
