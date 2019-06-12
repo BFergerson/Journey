@@ -92,12 +92,11 @@ public class JourneyBrowser {
 
 ### Linux
 ```sh
-curl -L https://github.com/CodeBrig/Journey/releases/download/0.2.16-online/journey-browser-0.2.16.jar --output journey-browser-0.2.16.jar
 curl -L https://github.com/CodeBrig/Journey/releases/download/0.2.16-73-assets/jcef-distrib-linux64.zip --output jcef-distrib-linux64.zip
 unzip jcef-distrib-linux64.zip
 
 export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/linux64/bin/lib/linux64
-java -cp "journey-browser-0.2.16.jar:linux64/bin/*" tests.detailed.MainFrame
+java -cp "linux64/bin/*" tests.detailed.MainFrame
 ```
 
 ## Version Matrix
