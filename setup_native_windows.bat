@@ -1,7 +1,7 @@
 SET PATH=%JAVA_HOME%;%PATH%
 
 git clone https://bitbucket.org/chromiumembedded/java-cef.git jcef
-call gradlew.bat checkoutJCEF
+call gradlew.bat checkoutJCEF patchJCEF
 
 echo "Running cmake..."
 cd jcef
