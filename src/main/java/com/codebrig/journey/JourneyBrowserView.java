@@ -15,7 +15,7 @@ import static org.joor.Reflect.on;
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.16
+ * @version 0.2.17
  * @since 0.1.1
  */
 @SuppressWarnings({"JavaReflectionInvocation", "WeakerAccess"})
