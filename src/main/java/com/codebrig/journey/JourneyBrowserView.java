@@ -89,7 +89,7 @@ public class JourneyBrowserView extends JComponent {
         return cefClient;
     }
 
-    public CefBrowserProxy getBrowser() {
+    public CefBrowserProxy getCefBrowser() {
         return cefBrowser;
     }
 
