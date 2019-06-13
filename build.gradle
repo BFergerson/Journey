@@ -35,7 +35,7 @@ dependencies {
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/jcef_build/native/Release', include: '*.jar')
-    compileOnly 'com.github.bfergerson:joor:9933e481b0'
+    compileOnly 'com.github.bfergerson:joor:bef9254b2a'
 }
 
 task createProperties(dependsOn: processResources) {
