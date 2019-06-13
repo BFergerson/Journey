@@ -101,7 +101,7 @@ java -cp "linux64/bin/*" tests.detailed.MainFrame
 
 ### macOS
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-69-online/jcef-distrib-macintosh64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-69-assets/jcef-distrib-macintosh64.zip
 unzip jcef-distrib-macintosh64.zip
 mv ./macosx64/bin/jcef_app.app .
 
