@@ -113,8 +113,8 @@ java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed
 
 ## Version Matrix
 
-| Build Date | Journey Version  | JCEF Version (Linux) | JCEF Version (macOS) | JCEF Version (Windows) |
-|------------|------------------|----------------------|----------------------|----------------------|
-| 2019-06-12 | 0.2.17 | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) |
-| 2019-06-10 | 0.2.16 | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |
-| 2019-05-21 | 0.1.1 | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | n/a | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |
+| Journey Version     | JCEF Version (Linux) | JCEF Version (macOS) | JCEF Version (Windows) |
+|---------------------|----------------------|----------------------|----------------------|
+| 0.2.17 (2019-06-12) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) |
+| 0.2.16 (2019-06-10) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |
+| 0.1.1 (2019-05-21)  | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | n/a | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |
