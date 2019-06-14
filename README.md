@@ -90,7 +90,7 @@ public class JourneyBrowser {
 
 ## JCEF Test Browser
 
-### Linux
+### Linux (64bit)
 ```sh
 curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-73-assets/jcef-distrib-linux64.zip
 unzip jcef-distrib-linux64.zip
@@ -99,7 +99,7 @@ export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/li
 java -cp "linux64/bin/*" tests.detailed.MainFrame
 ```
 
-### macOS
+### macOS (64bit)
 ```sh
 curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-69-assets/jcef-distrib-macintosh64.zip
 unzip jcef-distrib-macintosh64.zip
@@ -109,6 +109,14 @@ JAVA_PATH="./jcef_app.app/Contents/Java"
 FRAMEWORKS_PATH="./jcef_app.app/Contents/Frameworks"
 RESOURCES_DIR_PATH="$(pwd)/jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework/Resources"
 java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed.MainFrame --framework-dir-path=$FRAMEWORKS_PATH/Chromium\ Embedded\ Framework.framework --browser-subprocess-path=$FRAMEWORKS_PATH/jcef\ Helper.app/Contents/MacOS/jcef\ Helper --resources-dir-path="$RESOURCES_DIR_PATH" --disable-gpu
+```
+
+### Windows (64bit) [PowerShell]
+```
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+wget https://github.com/CodeBrig/Journey/releases/download/0.2.17-73-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
+Expand-Archive jcef-distrib-windows64.zip .
+java -cp "./win64/bin;./win64/bin/*" "-Djava.library.path=./win64/bin/lib/win64" tests.detailed.MainFrame
 ```
 
 ## Version Matrix
