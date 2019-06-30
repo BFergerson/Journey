@@ -3,11 +3,16 @@ package com.codebrig.journey;
 import com.codebrig.journey.proxy.CefAppProxy;
 import com.codebrig.journey.proxy.CefBrowserProxy;
 import com.codebrig.journey.proxy.CefClientProxy;
+import com.codebrig.journey.proxy.browser.CefFrameProxy;
+import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static org.joor.Reflect.on;
 
@@ -15,7 +20,7 @@ import static org.joor.Reflect.on;
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.17
+ * @version 0.2.18
  * @since 0.1.1
  */
 @SuppressWarnings({"JavaReflectionInvocation", "WeakerAccess"})
@@ -36,21 +41,37 @@ public class JourneyBrowserView extends JComponent {
     private CefClientProxy cefClient;
     private CefBrowserProxy cefBrowser;
 
-    public JourneyBrowserView() throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(CefBrowserProxy browser) {
+        this.cefBrowser = Objects.requireNonNull(browser);
+        this.cefClient = browser.getClient();
+
+        setLayout(new BorderLayout());
+        if (SwingUtilities.isEventDispatchThread()) {
+            add(cefBrowser.getUIComponent(), "Center");
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(() -> {
+                    add(cefBrowser.getUIComponent(), "Center");
+                });
+            } catch (InterruptedException | InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    public JourneyBrowserView() {
         this(getDefaultCEFArguments(), DEFAULT_SETTINGS, ABOUT_BLANK);
     }
 
-    public JourneyBrowserView(JourneySettings journeySettings, String initialUrl)
-            throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(JourneySettings journeySettings, String initialUrl) {
         this(getDefaultCEFArguments(), journeySettings, initialUrl);
     }
 
-    public JourneyBrowserView(String initialUrl) throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(String initialUrl) {
         this(getDefaultCEFArguments(), DEFAULT_SETTINGS, initialUrl);
     }
 
-    public JourneyBrowserView(String[] args, JourneySettings journeySettings, String initialUrl)
-            throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(String[] args, JourneySettings journeySettings, String initialUrl) {
         JourneyBrowserView.journeySettings = journeySettings;
 
         setLayout(new BorderLayout());
@@ -64,16 +85,57 @@ public class JourneyBrowserView extends JComponent {
             cefBrowser = cefClient.createBrowser(initialUrl, false, false);
             add(cefBrowser.getUIComponent(), "Center");
         } else {
-            SwingUtilities.invokeAndWait(() -> {
-                if (cefApp == null) {
-                    Object realCefApp = on(JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefApp"))
-                            .call("getInstance", args, journeySettings.asCefSettings()).get();
-                    cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
+            try {
+                SwingUtilities.invokeAndWait(() -> {
+                    if (cefApp == null) {
+                        Object realCefApp = on(JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefApp"))
+                                .call("getInstance", args, journeySettings.asCefSettings()).get();
+                        cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
+                    }
+                    cefClient = cefApp.createClient();
+                    cefBrowser = cefClient.createBrowser(initialUrl, false, false);
+                    add(cefBrowser.getUIComponent(), "Center");
+                });
+            } catch (InterruptedException | InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        //https://github.com/CodeBrig/Journey/issues/13
+        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+            cefClient.addLifeSpanHandler(CefLifeSpanHandlerProxy.createHandler(new CefLifeSpanHandlerProxy() {
+                @Override
+                public boolean onBeforePopup(CefBrowserProxy browser, CefFrameProxy frame, String targetUrl, String targetFrameName) {
+                    return false;
                 }
-                cefClient = cefApp.createClient();
-                cefBrowser = cefClient.createBrowser(initialUrl, false, false);
-                add(cefBrowser.getUIComponent(), "Center");
-            });
+
+                @Override
+                public void onAfterCreated(CefBrowserProxy browser) {
+                    new Timer().schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    if (browser.getZoomLevel() != -1.5) {
+                                        browser.setZoomLevel(-1.5);
+                                    }
+                                }
+                            }, 0, 50
+                    );
+                }
+
+                @Override
+                public void onAfterParentChanged(CefBrowserProxy browser) {
+                }
+
+                @Override
+                public boolean doClose(CefBrowserProxy browser) {
+                    return false;
+                }
+
+                @Override
+                public void onBeforeClose(CefBrowserProxy browser) {
+                }
+            }));
         }
     }
 
@@ -89,7 +151,7 @@ public class JourneyBrowserView extends JComponent {
         return cefClient;
     }
 
-    public CefBrowserProxy getBrowser() {
+    public CefBrowserProxy getCefBrowser() {
         return cefBrowser;
     }
 

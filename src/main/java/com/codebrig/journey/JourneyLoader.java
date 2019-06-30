@@ -20,7 +20,7 @@ import java.util.zip.ZipFile;
  * Downloads and loads the necessary CEF files for the current OS.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.17
+ * @version 0.2.18
  * @since 0.1.1
  */
 @SuppressWarnings({"WeakerAccess", "unused", "JavaReflectionMemberAccess"})
@@ -58,7 +58,7 @@ public class JourneyLoader extends URLClassLoader {
             if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
                 jcefVersion = "69.0.3497.100";
             } else {
-                jcefVersion = "73.1.11.215";
+                jcefVersion = "73.1.11.216";
             }
             JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, jcefVersion);
             if (!NATIVE_DIRECTORY.exists()) NATIVE_DIRECTORY.mkdirs();

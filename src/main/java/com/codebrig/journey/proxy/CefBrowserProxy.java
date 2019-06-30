@@ -7,9 +7,11 @@ import java.util.Vector;
 
 /**
  * Journey local proxy for CefBrowser.
+ * <p>
+ * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.17
+ * @version 0.2.18
  * @since 0.2.0
  */
 @SuppressWarnings("unused")
@@ -360,8 +362,7 @@ public interface CefBrowserProxy extends Reflect.ProxyObject {
      * @param matchCase  indicates whether the search should be case-sensitive.
      * @param findNext   indicates whether this is the first request or a follow-up.
      */
-    void find(int identifier, String searchText, boolean forward, boolean matchCase,
-              boolean findNext);
+    void find(int identifier, String searchText, boolean forward, boolean matchCase, boolean findNext);
 
     /**
      * Cancel all searches that are currently going on.

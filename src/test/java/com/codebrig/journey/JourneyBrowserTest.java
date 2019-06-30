@@ -9,6 +9,6 @@ public class JourneyBrowserTest {
     @Test
     public void createBrowser() throws Exception {
         JourneyBrowserView browser = new JourneyBrowserView("https://google.com");
-        assertNotNull(browser.getBrowser());
+        assertNotNull(browser.getCefBrowser());
     }
 }
