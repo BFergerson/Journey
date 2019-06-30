@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 import static org.joor.Reflect.on;
 
@@ -36,21 +37,37 @@ public class JourneyBrowserView extends JComponent {
     private CefClientProxy cefClient;
     private CefBrowserProxy cefBrowser;
 
-    public JourneyBrowserView() throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(CefBrowserProxy browser) {
+        this.cefBrowser = Objects.requireNonNull(browser);
+        this.cefClient = browser.getClient();
+
+        setLayout(new BorderLayout());
+        if (SwingUtilities.isEventDispatchThread()) {
+            add(cefBrowser.getUIComponent(), "Center");
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(() -> {
+                    add(cefBrowser.getUIComponent(), "Center");
+                });
+            } catch (InterruptedException | InvocationTargetException ex) {
+                throw new RuntimeException(ex)
+            }
+        }
+    }
+
+    public JourneyBrowserView() {
         this(getDefaultCEFArguments(), DEFAULT_SETTINGS, ABOUT_BLANK);
     }
 
-    public JourneyBrowserView(JourneySettings journeySettings, String initialUrl)
-            throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(JourneySettings journeySettings, String initialUrl) {
         this(getDefaultCEFArguments(), journeySettings, initialUrl);
     }
 
-    public JourneyBrowserView(String initialUrl) throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(String initialUrl) {
         this(getDefaultCEFArguments(), DEFAULT_SETTINGS, initialUrl);
     }
 
-    public JourneyBrowserView(String[] args, JourneySettings journeySettings, String initialUrl)
-            throws InvocationTargetException, InterruptedException {
+    public JourneyBrowserView(String[] args, JourneySettings journeySettings, String initialUrl) {
         JourneyBrowserView.journeySettings = journeySettings;
 
         setLayout(new BorderLayout());
@@ -64,16 +81,20 @@ public class JourneyBrowserView extends JComponent {
             cefBrowser = cefClient.createBrowser(initialUrl, false, false);
             add(cefBrowser.getUIComponent(), "Center");
         } else {
-            SwingUtilities.invokeAndWait(() -> {
-                if (cefApp == null) {
-                    Object realCefApp = on(JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefApp"))
-                            .call("getInstance", args, journeySettings.asCefSettings()).get();
-                    cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
-                }
-                cefClient = cefApp.createClient();
-                cefBrowser = cefClient.createBrowser(initialUrl, false, false);
-                add(cefBrowser.getUIComponent(), "Center");
-            });
+            try {
+                SwingUtilities.invokeAndWait(() -> {
+                    if (cefApp == null) {
+                        Object realCefApp = on(JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefApp"))
+                                .call("getInstance", args, journeySettings.asCefSettings()).get();
+                        cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
+                    }
+                    cefClient = cefApp.createClient();
+                    cefBrowser = cefClient.createBrowser(initialUrl, false, false);
+                    add(cefBrowser.getUIComponent(), "Center");
+                });
+            } catch (InterruptedException | InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
