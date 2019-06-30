@@ -90,7 +90,7 @@ public class JourneyBrowser {
 
 ## JCEF Test Browser
 
-### Linux
+### Linux (64bit)
 ```sh
 curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.18-73-assets/jcef-distrib-linux64.zip
 unzip jcef-distrib-linux64.zip
@@ -99,7 +99,7 @@ export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/li
 java -cp "linux64/bin/*" tests.detailed.MainFrame
 ```
 
-### macOS
+### macOS (64bit)
 ```sh
 curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.18-69-assets/jcef-distrib-macintosh64.zip
 unzip jcef-distrib-macintosh64.zip
@@ -111,10 +111,19 @@ RESOURCES_DIR_PATH="$(pwd)/jcef_app.app/Contents/Frameworks/Chromium Embedded Fr
 java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed.MainFrame --framework-dir-path=$FRAMEWORKS_PATH/Chromium\ Embedded\ Framework.framework --browser-subprocess-path=$FRAMEWORKS_PATH/jcef\ Helper.app/Contents/MacOS/jcef\ Helper --resources-dir-path="$RESOURCES_DIR_PATH" --disable-gpu
 ```
 
+### Windows (64bit) [PowerShell]
+```
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+wget https://github.com/CodeBrig/Journey/releases/download/0.2.17-73-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
+Expand-Archive jcef-distrib-windows64.zip .
+
+java -cp "./win64/bin;./win64/bin/*" "-Djava.library.path=./win64/bin/lib/win64" tests.detailed.MainFrame
+```
+
 ## Version Matrix
 
 | Journey Version     | JCEF Version (Linux) | JCEF Version (macOS) | JCEF Version (Windows) |
 |---------------------|----------------------|----------------------|----------------------|
-| 0.2.17 (2019-06-12) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) |
+| 0.2.17 (2019-06-12) | [73.1.11.216](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.216](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) |
 | 0.2.16 (2019-06-10) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |
 | 0.1.1 (2019-05-21)  | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | n/a | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |
