@@ -26,10 +26,10 @@ repositories {
 }
 
 dependencies {
-      compile 'com.github.codebrig:journey:0.2.17-online'
+      compile 'com.github.codebrig:journey:0.2.18-online'
 
       //or use the offline version (includes native CEF files for all platforms; ~300MB)
-      //compile 'com.github.codebrig:journey:0.2.17-offline'
+      //compile 'com.github.codebrig:journey:0.2.18-offline'
 }
 ```
 
@@ -46,10 +46,10 @@ dependencies {
 <dependency>
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
-	<version>0.2.17-online</version>
+	<version>0.2.18-online</version>
 
 	<!-- or use the offline version (includes native CEF files for all platforms; ~300MB) -->
-	<!-- <version>0.2.17-offline</version> -->
+	<!-- <version>0.2.18-offline</version> -->
 </dependency>
 ```
 
@@ -92,7 +92,7 @@ public class JourneyBrowser {
 
 ### Linux
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-73-assets/jcef-distrib-linux64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.18-73-assets/jcef-distrib-linux64.zip
 unzip jcef-distrib-linux64.zip
 
 export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/linux64/bin/lib/linux64
@@ -101,7 +101,7 @@ java -cp "linux64/bin/*" tests.detailed.MainFrame
 
 ### macOS
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.17-69-assets/jcef-distrib-macintosh64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.2.18-69-assets/jcef-distrib-macintosh64.zip
 unzip jcef-distrib-macintosh64.zip
 mv ./macosx64/bin/jcef_app.app .
 

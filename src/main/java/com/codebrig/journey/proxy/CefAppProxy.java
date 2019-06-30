@@ -8,7 +8,7 @@ import org.joor.Reflect;
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.2.17
+ * @version 0.2.18
  * @since 0.2.0
  */
 @SuppressWarnings("unused")
