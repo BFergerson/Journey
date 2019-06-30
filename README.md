@@ -114,7 +114,7 @@ java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed
 ### Windows (64bit) [PowerShell]
 ```
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-wget https://github.com/CodeBrig/Journey/releases/download/0.2.17-73-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
+wget https://github.com/CodeBrig/Journey/releases/download/0.2.18-73-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
 Expand-Archive jcef-distrib-windows64.zip .
 
 java -cp "./win64/bin;./win64/bin/*" "-Djava.library.path=./win64/bin/lib/win64" tests.detailed.MainFrame
