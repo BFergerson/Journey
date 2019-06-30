@@ -3,12 +3,16 @@ package com.codebrig.journey;
 import com.codebrig.journey.proxy.CefAppProxy;
 import com.codebrig.journey.proxy.CefBrowserProxy;
 import com.codebrig.journey.proxy.CefClientProxy;
+import com.codebrig.journey.proxy.browser.CefFrameProxy;
+import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static org.joor.Reflect.on;
 
@@ -95,6 +99,43 @@ public class JourneyBrowserView extends JComponent {
             } catch (InterruptedException | InvocationTargetException ex) {
                 throw new RuntimeException(ex);
             }
+        }
+
+        //https://github.com/CodeBrig/Journey/issues/13
+        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+            cefClient.addLifeSpanHandler(CefLifeSpanHandlerProxy.createHandler(new CefLifeSpanHandlerProxy() {
+                @Override
+                public boolean onBeforePopup(CefBrowserProxy browser, CefFrameProxy frame, String targetUrl, String targetFrameName) {
+                    return false;
+                }
+
+                @Override
+                public void onAfterCreated(CefBrowserProxy browser) {
+                    new Timer().schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    if (browser.getZoomLevel() != -1.5) {
+                                        browser.setZoomLevel(-1.5);
+                                    }
+                                }
+                            }, 0, 50
+                    );
+                }
+
+                @Override
+                public void onAfterParentChanged(CefBrowserProxy browser) {
+                }
+
+                @Override
+                public boolean doClose(CefBrowserProxy browser) {
+                    return false;
+                }
+
+                @Override
+                public void onBeforeClose(CefBrowserProxy browser) {
+                }
+            }));
         }
     }
 
