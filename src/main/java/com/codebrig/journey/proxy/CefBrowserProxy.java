@@ -7,6 +7,8 @@ import java.util.Vector;
 
 /**
  * Journey local proxy for CefBrowser.
+ * <p>
+ * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
  * @version 0.2.17
