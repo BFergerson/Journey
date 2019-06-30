@@ -50,7 +50,7 @@ public class JourneyBrowserView extends JComponent {
                     add(cefBrowser.getUIComponent(), "Center");
                 });
             } catch (InterruptedException | InvocationTargetException ex) {
-                throw new RuntimeException(ex)
+                throw new RuntimeException(ex);
             }
         }
     }
