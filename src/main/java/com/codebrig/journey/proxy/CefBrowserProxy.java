@@ -362,8 +362,7 @@ public interface CefBrowserProxy extends Reflect.ProxyObject {
      * @param matchCase  indicates whether the search should be case-sensitive.
      * @param findNext   indicates whether this is the first request or a follow-up.
      */
-    void find(int identifier, String searchText, boolean forward, boolean matchCase,
-              boolean findNext);
+    void find(int identifier, String searchText, boolean forward, boolean matchCase, boolean findNext);
 
     /**
      * Cancel all searches that are currently going on.

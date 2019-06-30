@@ -40,7 +40,7 @@ public interface CefLifeSpanHandlerProxy extends Reflect.ProxyObject {
     /**
      * Called on the IO thread before a new popup window is created. The |browser|
      * and |frame| parameters represent the source of the popup request. The
-     * |target_url| and |target_frame_name| values may be empty if none were
+     * |targetUrl| and |targetFrameName| values may be empty if none were
      * specified with the request. The |popupFeatures| structure contains
      * information about the requested popup window. To allow creation of the
      * popup window optionally modify |windowInfo|, |client|, |settings| and
@@ -50,13 +50,13 @@ public interface CefLifeSpanHandlerProxy extends Reflect.ProxyObject {
      * the new browser window should be scriptable and in the same process as the
      * source browser.
      *
-     * @param browser           The source of the popup request.
-     * @param frame             The source of the popup request.
-     * @param target_url        May be empty if none is specified with the request.
-     * @param target_frame_name May be empty if none is specified with the request.
+     * @param browser         The source of the popup request.
+     * @param frame           The source of the popup request.
+     * @param targetUrl       May be empty if none is specified with the request.
+     * @param targetFrameName May be empty if none is specified with the request.
      * @return To cancel creation of the popup window return true.
      */
-    boolean onBeforePopup(CefBrowserProxy browser, CefFrameProxy frame, String target_url, String target_frame_name);
+    boolean onBeforePopup(CefBrowserProxy browser, CefFrameProxy frame, String targetUrl, String targetFrameName);
 
     /**
      * Handle creation of a new browser window.
