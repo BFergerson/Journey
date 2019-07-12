@@ -41,10 +41,9 @@ dependencies {
 task createProperties(dependsOn: processResources) {
     doLast {
         def mode = "online"
-        if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
-            mode = System.getenv("TRAVIS_BRANCH").split("-")[2]
-        } else if (System.getenv("VERSION") != null && System.getenv("VERSION").split("-").length == 3) {
-            mode = System.getenv("VERSION").split("-")[2]
+        if ((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
+                (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))) {
+            mode = "offline"
         }
 
         new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
