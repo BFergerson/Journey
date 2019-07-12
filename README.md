@@ -65,7 +65,7 @@ import java.awt.event.WindowEvent;
 
 public class JourneyBrowser {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         JourneyBrowserView browser = new JourneyBrowserView("https://google.com");
         JFrame frame = new JFrame();
         frame.getContentPane().add(browser, BorderLayout.CENTER);
