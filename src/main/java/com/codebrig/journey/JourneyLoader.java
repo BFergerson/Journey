@@ -58,7 +58,7 @@ public class JourneyLoader extends URLClassLoader {
             if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
                 jcefVersion = "69.0.3497.100";
             } else {
-                jcefVersion = "75.0.3770.100";
+                jcefVersion = "75.0.13.220";
             }
             JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, jcefVersion);
             if (!NATIVE_DIRECTORY.exists()) NATIVE_DIRECTORY.mkdirs();
