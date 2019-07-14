@@ -127,7 +127,7 @@ public class JourneyLoader extends URLClassLoader {
                             extURL = extURL.substring(5);
                         }
                         extURL = extURL.replace(String.format("!/%s.class",
-                                JourneyLoader.class.getName()).replace(".", "/"), "");
+                                JourneyLoader.class.getName().replace(".", "/")), "");
                         localNative = new File(extURL);
                     } else {
                         localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource()
