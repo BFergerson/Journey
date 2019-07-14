@@ -177,25 +177,23 @@ public class JourneyLoader extends URLClassLoader {
             JOURNEY_LOADER_LISTENER.loadedNativeCEFFiles();
 
             JOURNEY_LOADER_LISTENER.loadingJCEF();
-            if ("online".equals(MODE)) {
-                File gluegenRtJar;
-                File joglAllJar;
-                File jcefJar;
-                if (osName.toLowerCase().startsWith("mac")) {
-                    gluegenRtJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/gluegen-rt.jar");
-                    joglAllJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/jogl-all.jar");
-                    jcefJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/jcef.jar");
-                } else {
-                    gluegenRtJar = new File(NATIVE_DIRECTORY, "gluegen-rt.jar");
-                    joglAllJar = new File(NATIVE_DIRECTORY, "jogl-all.jar");
-                    jcefJar = new File(NATIVE_DIRECTORY, "jcef.jar");
-                }
-                JOURNEY_CLASS_LOADER = new JourneyLoader(
-                        new URL[]{gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
-                        Thread.currentThread().getContextClassLoader());
-                JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
-                JOURNEY_CLASS_LOADER.loadJar(jcefJar);
+            File gluegenRtJar;
+            File joglAllJar;
+            File jcefJar;
+            if (osName.toLowerCase().startsWith("mac")) {
+                gluegenRtJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/gluegen-rt.jar");
+                joglAllJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/jogl-all.jar");
+                jcefJar = new File(NATIVE_DIRECTORY, "jcef_app.app/Contents/Java/jcef.jar");
+            } else {
+                gluegenRtJar = new File(NATIVE_DIRECTORY, "gluegen-rt.jar");
+                joglAllJar = new File(NATIVE_DIRECTORY, "jogl-all.jar");
+                jcefJar = new File(NATIVE_DIRECTORY, "jcef.jar");
             }
+            JOURNEY_CLASS_LOADER = new JourneyLoader(
+                    new URL[]{gluegenRtJar.toURL(), jcefJar.toURL(), joglAllJar.toURL()},
+                    Thread.currentThread().getContextClassLoader());
+            JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
+            JOURNEY_CLASS_LOADER.loadJar(jcefJar);
             if (chromiumMajorVersion >= 73) {
                 Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
                 method.invoke(null);
