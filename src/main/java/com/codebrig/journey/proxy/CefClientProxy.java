@@ -11,7 +11,7 @@ import java.lang.reflect.Proxy;
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.3.0
+ * @version 0.3.1
  * @since 0.2.0
  */
 @SuppressWarnings("unused")
