@@ -106,8 +106,11 @@ task initEnvironment {
             println "Downloading CEF natives files for offline distribution"
             new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-linux64.zip")
                     .withInputStream { i -> linuxBuild.withOutputStream { it << i } }
-            new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-macintosh64.zip")
+
+            //https://github.com/CodeBrig/Journey/issues/23        
+            new URL(project.projectUrl + "/releases/download/" + project.version + "-69-assets/jcef-distrib-macintosh64.zip")
                     .withInputStream { i -> macintoshBuild.withOutputStream { it << i } }
+
             new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-windows32.zip")
                     .withInputStream { i -> windows32Build.withOutputStream { it << i } }
             new URL(project.projectUrl + "/releases/download/" + project.version + "-$chromiumMajorVersion-assets/jcef-distrib-windows64.zip")
