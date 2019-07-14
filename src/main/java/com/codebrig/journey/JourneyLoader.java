@@ -117,8 +117,22 @@ public class JourneyLoader extends URLClassLoader {
                 }
                 if ("offline".equals(MODE)) {
                     //extract from self .jar
-                    localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource()
-                            .getLocation().toURI());
+                    if (JourneyLoader.class.getProtectionDomain().getCodeSource().getLocation() == null) {
+                        String extURL = JourneyLoader.class.getResource(
+                                JourneyLoader.class.getSimpleName() + ".class").toExternalForm();
+                        if (extURL.startsWith("jar:")) {
+                            extURL = extURL.substring(4);
+                        }
+                        if (extURL.startsWith("file:")) {
+                            extURL = extURL.substring(5);
+                        }
+                        extURL = extURL.replace(String.format("!/%s.class",
+                                JourneyLoader.class.getName()).replace(".", "/"), "");
+                        localNative = new File(extURL);
+                    } else {
+                        localNative = new File(JourneyLoader.class.getProtectionDomain().getCodeSource()
+                                .getLocation().toURI());
+                    }
                 }
 
                 try (ZipFile zipFile = new ZipFile(localNative)) {
