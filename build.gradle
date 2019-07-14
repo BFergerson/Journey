@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 group 'com.codebrig'
-version '0.2.18'
+version '0.3.0'
 
 sourceCompatibility = 1.8
 archivesBaseName = 'journey-browser'
@@ -12,12 +12,14 @@ ext {
     jcefVersion = [
             '67': '67.0.3396.62',
             '69': '69.0.3497.100',
-            '73': '73.1.11.216'
+            '73': '73.1.11.216',
+            '75': '75.0.13.220'
     ]
     jcefCommit = [
             '67': '1fda5d8f948670d08ef86bc4e8637b8581995ce9',
             '69': '235e3a844380b72761643324e1d9b7713cae3b63',
-            '73': '6b140efeef4e566b6a68025b1dcea9b2da6e6e57'
+            '73': '6b140efeef4e566b6a68025b1dcea9b2da6e6e57',
+            '75': '13ae2d6074bc00a31888fb752dd45f9cf254725d'
     ]
 }
 
@@ -41,10 +43,9 @@ dependencies {
 task createProperties(dependsOn: processResources) {
     doLast {
         def mode = "online"
-        if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
-            mode = System.getenv("TRAVIS_BRANCH").split("-")[2]
-        } else if (System.getenv("VERSION") != null && System.getenv("VERSION").split("-").length == 3) {
-            mode = System.getenv("VERSION").split("-")[2]
+        if ((System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").contains("offline")) ||
+                (System.getenv("VERSION") != null && System.getenv("VERSION").contains("offline"))) {
+            mode = "offline"
         }
 
         new File("$buildDir/resources/main/journey_build.properties").withWriter { w ->
@@ -70,7 +71,10 @@ jar {
 }
 
 task initEnvironment {
-    def chromiumMajorVersion = "73"
+    def chromiumMajorVersion = "75"
+    if (System.getenv("TRAVIS_OS_NAME") == "osx") {
+        chromiumMajorVersion = "73"
+    }
     if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
         chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
     } else if (System.getenv("VERSION") != null && System.getenv("VERSION").split("-").length == 3) {
@@ -144,7 +148,10 @@ task patchJCEF {
 
 task checkoutJCEF {
     doFirst {
-        def chromiumMajorVersion = "73"
+        def chromiumMajorVersion = "75"
+        if (System.getenv("TRAVIS_OS_NAME") == "osx") {
+            chromiumMajorVersion = "73"
+        }
         if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
             chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
         } else if (System.getenv("VERSION") != null && System.getenv("VERSION").split("-").length == 3) {
