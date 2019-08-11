@@ -1,13 +1,13 @@
 apply plugin: 'java'
 
-group 'com.codebrig'
-version '0.3.3'
+version '0.3.4'
+group 'com.dhruvit-r'
 
 sourceCompatibility = 1.8
 archivesBaseName = 'journey-browser'
 
 ext {
-    projectUrl = 'https://github.com/CodeBrig/Journey'
+    projectUrl = 'https://github.com/dhruvit-r/Journey'
 
     jcefVersion = [
             '67': '67.0.3396.62',
@@ -139,6 +139,10 @@ task patchJCEF {
         println "Patching java-cef#317"
         def cefAppFile = file('jcef/java/org/cef/CefApp.java')
         cefAppFile.text = cefAppFile.text.replace('System.loadLibrary("jawt");', file('patches/jcef-317.txt').text)
+
+        // println "Patching build.xml"
+        // def cefBuildFile = file('jcef/build.xml')
+        // cefBuildFile.text = cefBuildFile.text.replace('<classpath location="${jdk7.path}/jre/lib/rt.jar" />', file('patches/jcef-build-xml.txt').text)
 
         if (System.getenv("TRAVIS_OS_NAME") == "osx") {
             //https://bitbucket.org/chromiumembedded/java-cef/issues/270

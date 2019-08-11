@@ -1,0 +1,10 @@
+<compilerarg value="-XDignore.symbol.file"/>
+<compilerarg value="--add-exports"/>
+<compilerarg value="java.desktop/java.awt.peer=ALL-UNNAMED"/>
+<compilerarg value="--add-exports"/>
+<compilerarg value="java.desktop/sun.lwawt=ALL-UNNAMED"/>
+<compilerarg value="--add-exports"/>
+<compilerarg value="java.desktop/sun.lwawt.macosx=ALL-UNNAMED"/>
+<compilerarg value="--add-exports"/>
+<compilerarg value="java.desktop/sun.awt=ALL-UNNAMED"/>
+<classpath location="${jdk7.path}/jre/lib/rt.jar" />

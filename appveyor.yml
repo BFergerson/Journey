@@ -44,7 +44,7 @@ deploy:
   description: 'Release description'
   provider: GitHub
   auth_token:
-    secure: Dta1mWx33cdacZT+HJzfI0I9aauuITU8bbHzCg7F7i9nL0UpE+ZsTXzbKbGWd8gy
+    secure: N/NGcjsvSaZvxFrx3I41RrzmJ1Xfxc7gg6t0NmZxaaw3EQuQDHPeYKR5JCSS8PRX
   artifact: jcef\binary_distrib\jcef-distrib-%fullBuildType%.zip
   draft: false
   prerelease: false
