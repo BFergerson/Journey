@@ -23,7 +23,7 @@ deploy:
   provider: releases
   api_key: $GH_TOKEN
   file:
-  - "$TRAVIS_BUILD_DIR/build/libs/journey-browser-0.3.4.jar"
+  - "$TRAVIS_BUILD_DIR/build/libs/journey-browser-0.3.5.jar"
   - "$TRAVIS_BUILD_DIR/jcef/binary_distrib/jcef-distrib-linux64.zip"
   - "$TRAVIS_BUILD_DIR/jcef/binary_distrib/jcef-distrib-macintosh64.zip"
   skip_cleanup: true

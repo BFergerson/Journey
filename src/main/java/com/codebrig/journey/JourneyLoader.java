@@ -78,11 +78,11 @@ public class JourneyLoader extends URLClassLoader {
                 if (is64bit) {
                     providerName = "windows_64";
                     jcefName = "win64";
-                    JOURNEY_LOADER_LISTENER.determinedOS("windows", 32);
+                    JOURNEY_LOADER_LISTENER.determinedOS("windows", 64);
                 } else {
                     providerName = "windows_32";
                     jcefName = "win32";
-                    JOURNEY_LOADER_LISTENER.determinedOS("windows", 64);
+                    JOURNEY_LOADER_LISTENER.determinedOS("windows", 32);
                 }
             } else if (osName.toLowerCase().startsWith("linux")) {
                 providerName = "linux_64";
