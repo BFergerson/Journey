@@ -20,10 +20,10 @@ import static org.joor.Reflect.on;
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.3.3
+ * @version 0.4.0
  * @since 0.1.1
  */
-@SuppressWarnings({"WeakerAccess"})
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class JourneyBrowserView extends JComponent {
 
     public static final String ABOUT_BLANK = "about:blank";
