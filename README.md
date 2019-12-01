@@ -26,10 +26,10 @@ repositories {
 }
 
 dependencies {
-      compile 'com.github.codebrig:journey:0.3.3-online'
+      compile 'com.github.codebrig:journey:0.4.0-online'
 
       //or use the offline version (includes native CEF files for all platforms; ~300MB)
-      //compile 'com.github.codebrig:journey:0.3.3-offline'
+      //compile 'com.github.codebrig:journey:0.4.0-offline'
 }
 ```
 
@@ -46,10 +46,10 @@ dependencies {
 <dependency>
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
-	<version>0.3.3-online</version>
+	<version>0.4.0-online</version>
 
 	<!-- or use the offline version (includes native CEF files for all platforms; ~300MB) -->
-	<!-- <version>0.3.3-offline</version> -->
+	<!-- <version>0.4.0-offline</version> -->
 </dependency>
 ```
 
