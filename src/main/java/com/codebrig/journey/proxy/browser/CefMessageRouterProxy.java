@@ -10,7 +10,7 @@ import org.joor.Reflect.ProxyValueConverter;
 import java.lang.reflect.Proxy;
 
 /**
- * Journey local proxy for CefMessageRouterProxy.
+ * Journey local proxy for CefMessageRouter.
  * <p>
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
