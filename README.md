@@ -26,10 +26,10 @@ repositories {
 }
 
 dependencies {
-      compile 'com.github.codebrig:journey:0.3.3-online'
+      compile 'com.github.codebrig:journey:0.4.0-online'
 
       //or use the offline version (includes native CEF files for all platforms; ~300MB)
-      //compile 'com.github.codebrig:journey:0.3.3-offline'
+      //compile 'com.github.codebrig:journey:0.4.0-offline'
 }
 ```
 
@@ -46,10 +46,10 @@ dependencies {
 <dependency>
 	<groupId>com.github.codebrig</groupId>
 	<artifactId>journey</artifactId>
-	<version>0.3.3-online</version>
+	<version>0.4.0-online</version>
 
 	<!-- or use the offline version (includes native CEF files for all platforms; ~300MB) -->
-	<!-- <version>0.3.3-offline</version> -->
+	<!-- <version>0.4.0-offline</version> -->
 </dependency>
 ```
 
@@ -92,7 +92,7 @@ public class JourneyBrowser {
 
 ### Linux (64bit)
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.3.3-75-assets/jcef-distrib-linux64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.4.0-78-assets/jcef-distrib-linux64.zip
 unzip jcef-distrib-linux64.zip
 
 export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/linux64/bin/lib/linux64
@@ -101,7 +101,7 @@ java -cp "linux64/bin/*" tests.detailed.MainFrame
 
 ### macOS (64bit)
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.3.3-69-assets/jcef-distrib-macintosh64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.4.0-69-assets/jcef-distrib-macintosh64.zip
 unzip jcef-distrib-macintosh64.zip
 mv ./macosx64/bin/jcef_app.app .
 
@@ -114,7 +114,7 @@ java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed
 ### Windows (64bit) [PowerShell]
 ```
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-wget https://github.com/CodeBrig/Journey/releases/download/0.3.3-75-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
+wget https://github.com/CodeBrig/Journey/releases/download/0.4.0-78-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
 Expand-Archive jcef-distrib-windows64.zip .
 
 java -cp "./win64/bin;./win64/bin/*" "-Djava.library.path=./win64/bin/lib/win64" tests.detailed.MainFrame
@@ -124,6 +124,7 @@ java -cp "./win64/bin;./win64/bin/*" "-Djava.library.path=./win64/bin/lib/win64"
 
 | Journey Version     | JCEF Version (Linux) | JCEF Version (macOS) | JCEF Version (Windows) |
 |---------------------|----------------------|----------------------|----------------------|
+| 0.4.0 (2019-11-30) | [78.2.7.237](https://bitbucket.org/chromiumembedded/java-cef/commits/1e3a9146226d3df8a7f0c9c03989d220ac26ca49) (2019-11-14) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [78.2.7.237](https://bitbucket.org/chromiumembedded/java-cef/commits/1e3a9146226d3df8a7f0c9c03989d220ac26ca49) (2019-11-14) |
 | 0.3.3 (2019-07-13) | [75.0.13.220](https://bitbucket.org/chromiumembedded/java-cef/commits/13ae2d6074bc00a31888fb752dd45f9cf254725d) (2019-07-09) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [75.0.13.220](https://bitbucket.org/chromiumembedded/java-cef/commits/13ae2d6074bc00a31888fb752dd45f9cf254725d) (2019-07-09) |
 | 0.2.18 (2019-06-30)<br>0.2.17 (2019-06-12) | [73.1.11.216](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.216](https://bitbucket.org/chromiumembedded/java-cef/commits/6b140efeef4e566b6a68025b1dcea9b2da6e6e57) (2019-05-21) |
 | 0.2.16 (2019-06-10) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) | [69.0.3497.100](https://bitbucket.org/chromiumembedded/java-cef/commits/235e3a844380b72761643324e1d9b7713cae3b63) (2018-11-01) | [73.1.11.215](https://bitbucket.org/chromiumembedded/java-cef/commits/d348788e3347fa4d2a421773463f7dd62da60991) (2019-05-10) |

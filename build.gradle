@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
+version '0.4.0'
 group 'com.codebrig'
-version '0.3.3'
 
 sourceCompatibility = 1.8
 archivesBaseName = 'journey-browser'
@@ -13,13 +13,15 @@ ext {
             '67': '67.0.3396.62',
             '69': '69.0.3497.100',
             '73': '73.1.11.216',
-            '75': '75.0.13.220'
+            '75': '75.0.13.220',
+            '78': '78.2.7.237'
     ]
     jcefCommit = [
             '67': '1fda5d8f948670d08ef86bc4e8637b8581995ce9',
             '69': '235e3a844380b72761643324e1d9b7713cae3b63',
             '73': '6b140efeef4e566b6a68025b1dcea9b2da6e6e57',
-            '75': '13ae2d6074bc00a31888fb752dd45f9cf254725d'
+            '75': '13ae2d6074bc00a31888fb752dd45f9cf254725d',
+            '78': '1e3a9146226d3df8a7f0c9c03989d220ac26ca49'
     ]
 }
 
@@ -71,7 +73,7 @@ jar {
 }
 
 task initEnvironment {
-    def chromiumMajorVersion = "75"
+    def chromiumMajorVersion = "78"
     if (System.getenv("TRAVIS_OS_NAME") == "osx") {
         chromiumMajorVersion = "73"
     }
@@ -151,7 +153,7 @@ task patchJCEF {
 
 task checkoutJCEF {
     doFirst {
-        def chromiumMajorVersion = "75"
+        def chromiumMajorVersion = "78"
         if (System.getenv("TRAVIS_OS_NAME") == "osx") {
             chromiumMajorVersion = "73"
         }

@@ -7,7 +7,7 @@ import static junit.framework.TestCase.assertNotNull;
 public class JourneyBrowserTest {
 
     @Test
-    public void createBrowser() throws Exception {
+    public void createBrowser() {
         JourneyBrowserView browser = new JourneyBrowserView("https://google.com");
         assertNotNull(browser.getCefBrowser());
     }

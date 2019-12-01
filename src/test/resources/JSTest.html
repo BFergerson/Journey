@@ -1,0 +1,35 @@
+<html>
+<head>
+    <script>
+        function execute(cmd) {
+            try {
+                window.cefQuery({
+                    request: cmd,
+                    onSuccess: function (response) {
+                        document.getElementById("js_test_label").innerHTML = response;
+                    },
+                    onFailure: function (error_code, error_message) {
+                        document.getElementById('js_test_label').value = 'Error: ' + error_message;
+                    }
+                });
+            } catch (ex) {
+                console.dir(ex);
+            }
+        }
+
+        execute("javaVersion");
+    </script>
+</head>
+
+<body bgcolor="white">
+<b>Java Version</b>: <label id="js_test_label">n/a</label>
+<br/>
+<br/>
+<a href="https://google.com">Google</a>
+<br/>
+<br/>
+<form>
+    <input type="button" onclick="execute('showDevTools')" value="Show Dev Tools">
+</form>
+</body>
+</html>

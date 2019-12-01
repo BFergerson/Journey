@@ -7,10 +7,10 @@ import org.joor.Reflect;
  * Note: This doesn't use a real proxy because CefSettings exposes configuration through fields instead of methods.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.3.3
+ * @version 0.4.0
  * @since 0.2.0
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class JourneySettings {
 
     public static Class CEF_SETTINGS_CLASS = JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefSettings");
@@ -210,15 +210,12 @@ public class JourneySettings {
 //        }
 //    }
 
-    public static enum LogSeverity {
+    public enum LogSeverity {
         LOGSEVERITY_DEFAULT,
         LOGSEVERITY_VERBOSE,
         LOGSEVERITY_INFO,
         LOGSEVERITY_WARNING,
         LOGSEVERITY_ERROR,
         LOGSEVERITY_DISABLE;
-
-        private LogSeverity() {
-        }
     }
 }

@@ -11,7 +11,7 @@ import java.util.Vector;
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.3.3
+ * @version 0.4.0
  * @since 0.2.0
  */
 @SuppressWarnings("unused")
