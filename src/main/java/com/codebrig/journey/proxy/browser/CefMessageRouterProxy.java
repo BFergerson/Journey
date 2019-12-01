@@ -26,10 +26,8 @@ public interface CefMessageRouterProxy extends Reflect.ProxyObject {
         } else if ("removeHandler".equals(methodName)) {
             args[0] = ((Reflect.ProxyInvocationHandler) Proxy.getInvocationHandler(args[0])).getUnderlyingObject();
         } else if ("cancelPending".equals(methodName)) {
-            args[0] = Reflect.on(args[0]).as(CefBrowserProxy.class);
             args[0] = ((Reflect.ProxyInvocationHandler) Proxy.getInvocationHandler(args[0])).getUnderlyingObject();
         } else if ("getPendingCount".equals(methodName)) {
-            args[0] = Reflect.on(args[0]).as(CefBrowserProxy.class);
             args[0] = ((Reflect.ProxyInvocationHandler) Proxy.getInvocationHandler(args[0])).getUnderlyingObject();
         }
     };
