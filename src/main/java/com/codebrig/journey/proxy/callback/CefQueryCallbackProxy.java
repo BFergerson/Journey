@@ -3,7 +3,7 @@ package com.codebrig.journey.proxy.callback;
 import org.joor.Reflect;
 
 /**
- * Journey local proxy for CefQueryCallbackProxy.
+ * Journey local proxy for CefQueryCallback.
  * <p>
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
