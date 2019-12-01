@@ -9,6 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import sun.awt.AWTAccessor;
+
 @SuppressWarnings("unused")
 public class CefBrowserWindowMac implements CefBrowserWindow {
 
@@ -39,8 +41,8 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
                 comp = comp.getParent();
                 continue;
             }
-            @SuppressWarnings("deprecation")
-            ComponentPeer peer = comp.getPeer();
+
+            ComponentPeer peer = AWTAccessor.getComponentAccessor().getPeer(comp);
 
             if (LWComponentPeer.isInstance(peer)) {
                 Object pWindow;
@@ -52,7 +54,7 @@ public class CefBrowserWindowMac implements CefBrowserWindow {
                 if (CPlatformWindow.isInstance(pWindow)) {
                     try {
                         Object nativeActionProxy = Proxy.newProxyInstance(getClass().getClassLoader(),
-                                new Class[]{CFNativeAction}, new InvocationHandler() {
+                                new Class[] { CFNativeAction }, new InvocationHandler() {
                                     @Override
                                     public Object invoke(Object o, Method method, Object[] args) {
                                         if ("run".equals(method.getName())) {
