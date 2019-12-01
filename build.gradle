@@ -34,12 +34,13 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'com.github.bfergerson:joor:bef9254b2a'
+    compileOnly 'com.github.bfergerson:joor:bef9254b2a'
 
     compile fileTree(dir: 'jcef/binary_distrib/linux64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win32/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/binary_distrib/win64/bin/', include: '*.jar')
     compile fileTree(dir: 'jcef/jcef_build/native/Release', include: '*.jar')
-    compileOnly 'com.github.bfergerson:joor:bef9254b2a'
 }
 
 task createProperties(dependsOn: processResources) {
