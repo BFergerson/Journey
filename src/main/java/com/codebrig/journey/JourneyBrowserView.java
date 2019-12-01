@@ -23,7 +23,7 @@ import static org.joor.Reflect.on;
  * @version 0.3.3
  * @since 0.1.1
  */
-@SuppressWarnings({"JavaReflectionInvocation", "WeakerAccess"})
+@SuppressWarnings({"WeakerAccess"})
 public class JourneyBrowserView extends JComponent {
 
     public static final String ABOUT_BLANK = "about:blank";

@@ -1,14 +1,13 @@
 package com.codebrig.journey.proxy.browser;
 
-import java.lang.reflect.Proxy;
-
 import com.codebrig.journey.JourneyLoader;
 import com.codebrig.journey.proxy.CefBrowserProxy;
 import com.codebrig.journey.proxy.handler.CefMessageRouterHandlerProxy;
-
 import org.joor.Reflect;
 import org.joor.Reflect.ProxyArgumentsConverter;
 import org.joor.Reflect.ProxyValueConverter;
+
+import java.lang.reflect.Proxy;
 
 /**
  * Journey local proxy for CefMessageRouterProxy.
@@ -16,10 +15,10 @@ import org.joor.Reflect.ProxyValueConverter;
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:dhruvit.raithatha@gmail.com">Dhruvit Raithatha</a>
- * @version 0.3.4
- * @since 0.3.4
+ * @version 0.4.0
+ * @since 0.4.0
  */
-public abstract interface CefMessageRouterProxy extends Reflect.ProxyObject {
+public interface CefMessageRouterProxy extends Reflect.ProxyObject {
 
     ProxyArgumentsConverter PROXY_ARGUMENTS_CONVERTER = (methodName, args) -> {
         if ("addHandler".equals(methodName)) {
@@ -36,30 +35,6 @@ public abstract interface CefMessageRouterProxy extends Reflect.ProxyObject {
     };
 
     ProxyValueConverter PROXY_VALUE_CONVERTER = (methodName, returnValue) -> returnValue;
-
-    /**
-     * Create a new router with the default configuration.
-     *
-     * @return in instance of CefMessageRouterProxy
-     */
-    static CefMessageRouterProxy create() {
-        JourneyLoader classLoader = JourneyLoader.getJourneyClassLoader();
-        Class<?> CefMessageRouterClass = classLoader.loadClass("org.cef.browser.CefMessageRouter");
-
-        // Object realCefMessageRouter = Reflect.onClass(CefMessageRouterClass).call("create").get();
-        // return Reflect.on(realCefMessageRouter).as(CefMessageRouterProxy.class);
-        Object realCefMessageRouter = Reflect
-            .onClass(CefMessageRouterClass)
-            .call("create")
-            .get();
-        CefMessageRouterProxy cefMessageRoute = Reflect
-            .on(realCefMessageRouter)
-            .as(
-                CefMessageRouterProxy.class,
-                JourneyLoader.getJourneyClassLoader()
-            );
-        return cefMessageRoute;
-    };
 
     /**
      * Must be called if the CefMessageRouterProxy instance isn't used any more
@@ -113,5 +88,10 @@ public abstract interface CefMessageRouterProxy extends Reflect.ProxyObject {
      */
     int getPendingCount(CefBrowserProxy browser, CefMessageRouterHandlerProxy handler);
 
-    
+    static CefMessageRouterProxy createRouter() {
+        JourneyLoader classLoader = JourneyLoader.getJourneyClassLoader();
+        Object realCefMessageRouter = Reflect.onClass(classLoader.loadClass("org.cef.browser.CefMessageRouter"))
+                .call("create").get();
+        return Reflect.on(realCefMessageRouter).as(CefMessageRouterProxy.class);
+    }
 }
