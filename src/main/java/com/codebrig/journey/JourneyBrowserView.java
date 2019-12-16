@@ -1,20 +1,26 @@
 package com.codebrig.journey;
 
-import com.codebrig.journey.proxy.CefAppProxy;
-import com.codebrig.journey.proxy.CefBrowserProxy;
-import com.codebrig.journey.proxy.CefClientProxy;
-import com.codebrig.journey.proxy.browser.CefFrameProxy;
-import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
+import static org.joor.Reflect.on;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static org.joor.Reflect.on;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+
+import com.codebrig.journey.proxy.CefAppProxy;
+import com.codebrig.journey.proxy.CefBrowserProxy;
+import com.codebrig.journey.proxy.CefClientProxy;
+import com.codebrig.journey.proxy.browser.CefFrameProxy;
+import com.codebrig.journey.proxy.browser.CefKeyEventWrapper;
+import com.codebrig.journey.proxy.handler.CefKeyboardHandlerProxy;
+import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
 
 /**
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
@@ -137,6 +143,28 @@ public class JourneyBrowserView extends JComponent {
                 }
             }));
         }
+        
+        cefClient.addKeyboardHandler(CefKeyboardHandlerProxy.createHandler(new CefKeyboardHandlerProxy() {
+            
+            @Override
+            public boolean onPreKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event, boolean isKeyboardShortcut) {
+                KeyEvent ke = new KeyEvent(JourneyBrowserView.this, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), event.getModifiers(), event.getWindowsKeyCode(), event.getCharacter());
+                for(KeyListener keyListener : getKeyListeners()) {
+                    keyListener.keyPressed(ke);
+                }
+                return ke.isConsumed();
+            }
+
+            @Override
+            public boolean onKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event) {
+                KeyEvent ke = new KeyEvent(JourneyBrowserView.this, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), event.getModifiers(), event.getWindowsKeyCode(), event.getCharacter());
+                for(KeyListener keyListener : getKeyListeners()) {
+                    keyListener.keyTyped(ke);
+                }
+                return ke.isConsumed();
+            }
+
+        }));
     }
 
     public JourneySettings getJourneySettings() {
@@ -173,4 +201,5 @@ public class JourneyBrowserView extends JComponent {
             return new String[0];
         }
     }
+    
 }
