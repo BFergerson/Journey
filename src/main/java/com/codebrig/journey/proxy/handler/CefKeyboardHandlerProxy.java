@@ -49,9 +49,7 @@ public interface CefKeyboardHandlerProxy extends Reflect.ProxyObject {
      * @param event   contains information about the keyboard event.
      * @return true if the keyboard event was handled or false otherwise.
      */
-    default boolean onKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event) {
-        return false;
-    }
+    boolean onKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event);
 
     /**
      * Use this to create a Journey browser specific keyboard handler to receive browser keyboard events.
