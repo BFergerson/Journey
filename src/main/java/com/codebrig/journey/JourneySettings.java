@@ -13,6 +13,15 @@ import org.joor.Reflect;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class JourneySettings {
 
+    public enum LogSeverity {
+        LOGSEVERITY_DEFAULT,
+        LOGSEVERITY_VERBOSE,
+        LOGSEVERITY_INFO,
+        LOGSEVERITY_WARNING,
+        LOGSEVERITY_ERROR,
+        LOGSEVERITY_DISABLE;
+    }
+
     public static Class CEF_SETTINGS_CLASS = JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefSettings");
     private Object cefSettings;
 
@@ -209,13 +218,4 @@ public class JourneySettings {
 //            return var1;
 //        }
 //    }
-
-    public enum LogSeverity {
-        LOGSEVERITY_DEFAULT,
-        LOGSEVERITY_VERBOSE,
-        LOGSEVERITY_INFO,
-        LOGSEVERITY_WARNING,
-        LOGSEVERITY_ERROR,
-        LOGSEVERITY_DISABLE;
-    }
 }
