@@ -1,13 +1,12 @@
 package com.codebrig.journey.proxy;
 
-import java.lang.reflect.Proxy;
-
-import org.joor.Reflect;
-
 import com.codebrig.journey.proxy.browser.CefMessageRouterProxy;
 import com.codebrig.journey.proxy.handler.CefJSDialogHandlerProxy;
 import com.codebrig.journey.proxy.handler.CefKeyboardHandlerProxy;
 import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
+import org.joor.Reflect;
+
+import java.lang.reflect.Proxy;
 
 /**
  * Journey local proxy for CefClient.
