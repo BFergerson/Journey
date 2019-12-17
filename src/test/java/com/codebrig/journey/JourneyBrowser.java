@@ -1,21 +1,16 @@
 package com.codebrig.journey;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 import com.codebrig.journey.proxy.CefBrowserProxy;
 import com.codebrig.journey.proxy.browser.CefFrameProxy;
 import com.codebrig.journey.proxy.browser.CefMessageRouterProxy;
 import com.codebrig.journey.proxy.callback.CefQueryCallbackProxy;
 import com.codebrig.journey.proxy.handler.CefMessageRouterHandlerProxy;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 
 public class JourneyBrowser {
 
@@ -63,25 +58,6 @@ public class JourneyBrowser {
             }
         }), true);
         browser.getCefClient().addMessageRouter(messageRouter);
-        
-        browser.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                System.out.println("keyPressed: " + e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                System.out.println("keyTyped: " + e);
-            }
-            
-        });
 
         JFrame frame = new JFrame();
         frame.getContentPane().add(browser, BorderLayout.CENTER);

@@ -1,14 +1,13 @@
 package com.codebrig.journey.proxy.handler;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
-import org.joor.Reflect;
-
 import com.codebrig.journey.JourneyLoader;
 import com.codebrig.journey.proxy.CefBrowserProxy;
-import com.codebrig.journey.proxy.browser.CefKeyEventWrapper;
+import com.codebrig.journey.proxy.misc.CefKeyEventWrapper;
 import com.codebrig.journey.proxy.misc.BoolRefProxy;
+import org.joor.Reflect;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * Journey local proxy for CefKeyboardHandler.
@@ -24,10 +23,10 @@ public interface CefKeyboardHandlerProxy extends Reflect.ProxyObject {
         if ("onPreKeyEvent".equals(methodName)) {
             args[0] = Reflect.on(args[0]).as(CefBrowserProxy.class);
             args[1] = new CefKeyEventWrapper(args[1]);
-            args[2] = Reflect.on(args[2]).as(BoolRefProxy.class).get();
+            args[2] = Reflect.on(args[2]).as(BoolRefProxy.class);
         } else if ("onKeyEvent".equals(methodName)) {
             args[0] = Reflect.on(args[0]).as(CefBrowserProxy.class);
-            args[1] =  new CefKeyEventWrapper(args[1]);
+            args[1] = new CefKeyEventWrapper(args[1]);
         }
     };
 
@@ -35,21 +34,19 @@ public interface CefKeyboardHandlerProxy extends Reflect.ProxyObject {
 
     /**
      * Called before a keyboard event is sent to the renderer.
-     * 
-     * @param browser the corresponding browser.
-     * @param event contains information about the keyboard event.
+     *
+     * @param browser            the corresponding browser.
+     * @param event              contains information about the keyboard event.
      * @param isKeyboardShortcut set to true and return false, if the event will be handled in OnKeyEvent() as a keyboard shortcut.
      * @return true if the event was handled or false otherwise.
      */
-    default boolean onPreKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event, boolean isKeyboardShortcut) {
-        return false;
-    }
+    boolean onPreKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event, BoolRefProxy isKeyboardShortcut);
 
     /**
      * Called after the renderer and JavaScript in the page has had a chance to handle the event.
-     * 
-     * @param browser  the corresponding browser.
-     * @param event contains information about the keyboard event.
+     *
+     * @param browser the corresponding browser.
+     * @param event   contains information about the keyboard event.
      * @return true if the keyboard event was handled or false otherwise.
      */
     default boolean onKeyEvent(CefBrowserProxy browser, CefKeyEventWrapper event) {
@@ -58,7 +55,7 @@ public interface CefKeyboardHandlerProxy extends Reflect.ProxyObject {
 
     /**
      * Use this to create a Journey browser specific keyboard handler to receive browser keyboard events.
-     * 
+     *
      * @param handler
      * @return
      */
