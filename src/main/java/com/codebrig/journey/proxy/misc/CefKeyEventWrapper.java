@@ -18,32 +18,6 @@ public class CefKeyEventWrapper {
         this.jcefNativeKeyEvent = Reflect.on(jcefNativeKeyEvent);
     }
 
-    public enum EventType {
-        /**
-         * Notification that a key transitioned from "up" to "down"
-         */
-        KEYEVENT_RAWKEYDOWN,
-
-        /**
-         * Notification that a key was pressed. This does not necessarily
-         * correspond to a character depending on the key and language. Use
-         * KEYEVENT_CHAR for character input.
-         */
-        KEYEVENT_KEYDOWN,
-
-        /**
-         * Notification that a key was released
-         */
-        KEYEVENT_KEYUP,
-
-        /**
-         * Notification that a character was typed. Use this for text input. Key
-         * down events may generate 0, 1, or more than one character event
-         * depending on the key, locale, and operating system.
-         */
-        KEYEVENT_CHAR
-    }
-
     /**
      * The type of keyboard event.
      */
@@ -107,5 +81,31 @@ public class CefKeyEventWrapper {
      */
     public boolean isFocusOnEditableField() {
         return jcefNativeKeyEvent.get("focus_on_editable_field");
+    }
+
+    public enum EventType {
+        /**
+         * Notification that a key transitioned from "up" to "down"
+         */
+        KEYEVENT_RAWKEYDOWN,
+
+        /**
+         * Notification that a key was pressed. This does not necessarily
+         * correspond to a character depending on the key and language. Use
+         * KEYEVENT_CHAR for character input.
+         */
+        KEYEVENT_KEYDOWN,
+
+        /**
+         * Notification that a key was released
+         */
+        KEYEVENT_KEYUP,
+
+        /**
+         * Notification that a character was typed. Use this for text input. Key
+         * down events may generate 0, 1, or more than one character event
+         * depending on the key, locale, and operating system.
+         */
+        KEYEVENT_CHAR
     }
 }
