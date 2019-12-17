@@ -2,8 +2,8 @@ package com.codebrig.journey.proxy.handler;
 
 import com.codebrig.journey.JourneyLoader;
 import com.codebrig.journey.proxy.CefBrowserProxy;
-import com.codebrig.journey.proxy.misc.CefKeyEventWrapper;
 import com.codebrig.journey.proxy.misc.BoolRefProxy;
+import com.codebrig.journey.proxy.misc.CefKeyEventWrapper;
 import org.joor.Reflect;
 
 import java.lang.reflect.Method;
