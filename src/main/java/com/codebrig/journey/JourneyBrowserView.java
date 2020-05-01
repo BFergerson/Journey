@@ -155,7 +155,7 @@ public class JourneyBrowserView extends JComponent {
         return cefBrowser;
     }
 
-    private static String[] getDefaultCEFArguments() {
+    protected static String[] getDefaultCEFArguments() {
         if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
             File frameworkDirPath = new File(JourneyLoader.NATIVE_DIRECTORY,
                     "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework");
