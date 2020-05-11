@@ -9,7 +9,7 @@ matrix:
 
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ant ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install adoptopenjdk/openjdk/adoptopenjdk8 && java -version ; fi
+#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install adoptopenjdk/openjdk/adoptopenjdk8 && java -version ; fi
 
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./setup_native_linux.sh ; fi
