@@ -156,7 +156,7 @@ task checkoutJCEF {
     doFirst {
         def chromiumMajorVersion = "78"
         if (System.getenv("TRAVIS_OS_NAME") == "osx") {
-            chromiumMajorVersion = "73"
+            chromiumMajorVersion = "69"
         }
         if (System.getenv("TRAVIS_BRANCH") != null && System.getenv("TRAVIS_BRANCH").split("-").length == 3) {
             chromiumMajorVersion = System.getenv("TRAVIS_BRANCH").split("-")[1]
