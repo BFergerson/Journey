@@ -20,7 +20,7 @@ import static org.joor.Reflect.on;
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.4.0
+ * @version 0.4.1
  * @since 0.1.1
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -155,7 +155,7 @@ public class JourneyBrowserView extends JComponent {
         return cefBrowser;
     }
 
-    private static String[] getDefaultCEFArguments() {
+    protected static String[] getDefaultCEFArguments() {
         if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
             File frameworkDirPath = new File(JourneyLoader.NATIVE_DIRECTORY,
                     "jcef_app.app/Contents/Frameworks/Chromium Embedded Framework.framework");

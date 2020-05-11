@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-version '0.4.0'
+version '0.4.1'
 group 'com.codebrig'
 
 sourceCompatibility = 1.8

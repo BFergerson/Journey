@@ -20,10 +20,10 @@ import java.util.zip.ZipFile;
  * Downloads and loads the necessary CEF files for the current OS.
  *
  * @author <a href="mailto:brandon.fergerson@codebrig.com">Brandon Fergerson</a>
- * @version 0.4.0
+ * @version 0.4.1
  * @since 0.1.1
  */
-@SuppressWarnings({"WeakerAccess", "unused", "JavaReflectionMemberAccess"})
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class JourneyLoader extends URLClassLoader {
 
     private static final ResourceBundle BUILD = ResourceBundle.getBundle("journey_build");
@@ -194,9 +194,15 @@ public class JourneyLoader extends URLClassLoader {
                     Thread.currentThread().getContextClassLoader());
             JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
             JOURNEY_CLASS_LOADER.loadJar(jcefJar);
-            if (chromiumMajorVersion >= 73) {
-                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
-                method.invoke(null);
+            try {
+                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup", String[].class);
+                method.invoke(null, (Object) JourneyBrowserView.getDefaultCEFArguments());
+            } catch (NoSuchMethodException ignore) {
+                try {
+                    Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
+                    method.invoke(null);
+                } catch (NoSuchMethodException ignored) {
+                }
             }
             JOURNEY_LOADER_LISTENER.loadedJCEF();
             JOURNEY_LOADER_LISTENER.journeyLoaderComplete();

@@ -15,7 +15,7 @@ import java.lang.reflect.Proxy;
  * Javadoc taken from: https://bitbucket.org/chromiumembedded/java-cef
  *
  * @author <a href="mailto:dhruvit.raithatha@gmail.com">Dhruvit Raithatha</a>
- * @version 0.4.0
+ * @version 0.4.1
  * @since 0.4.0
  */
 public interface CefMessageRouterProxy extends Reflect.ProxyObject {
