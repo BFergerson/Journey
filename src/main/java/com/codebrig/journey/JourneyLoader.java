@@ -31,8 +31,7 @@ public class JourneyLoader extends URLClassLoader {
     public static final String MODE = BUILD.getString("mode");
     public static final String PROJECT_URL = BUILD.getString("project_url");
     public static File NATIVE_DIRECTORY = new File((System.getProperty("os.name").toLowerCase().startsWith("mac"))
-            ? "/tmp" : System.getProperty("java.io.tmpdir"),
-            "journey-" + (System.getProperty("os.name").toLowerCase().startsWith("mac") ? "69" : "78"));
+            ? "/tmp" : System.getProperty("java.io.tmpdir"), "journey-83");
 
     private static JourneyLoader JOURNEY_CLASS_LOADER;
     private static JourneyLoaderListener JOURNEY_LOADER_LISTENER = new JourneyLoaderAdapter() {
@@ -54,12 +53,7 @@ public class JourneyLoader extends URLClassLoader {
                 return;
             }
 
-            String jcefVersion;
-            if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
-                jcefVersion = "69.0.3497.100";
-            } else {
-                jcefVersion = "78.2.7.237";
-            }
+            String jcefVersion = "83.0.4103.106";
             JOURNEY_LOADER_LISTENER.journeyLoaderStarted(VERSION, jcefVersion);
             if (!NATIVE_DIRECTORY.exists()) NATIVE_DIRECTORY.mkdirs();
             JOURNEY_LOADER_LISTENER.usingNativeDirectory(NATIVE_DIRECTORY);

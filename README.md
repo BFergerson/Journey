@@ -92,7 +92,7 @@ public class JourneyBrowser {
 
 ### Linux (64bit)
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.4.1-78-assets/jcef-distrib-linux64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.4.1-83-assets/jcef-distrib-linux64.zip
 unzip jcef-distrib-linux64.zip
 
 export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:$(pwd)/linux64/bin/lib/linux64
@@ -101,7 +101,7 @@ java -cp "linux64/bin/*" tests.detailed.MainFrame
 
 ### macOS (64bit)
 ```sh
-curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.4.1-69-assets/jcef-distrib-macintosh64.zip
+curl -L -O https://github.com/CodeBrig/Journey/releases/download/0.4.1-83-assets/jcef-distrib-macintosh64.zip
 unzip jcef-distrib-macintosh64.zip
 mv ./macosx64/bin/jcef_app.app .
 
@@ -114,7 +114,7 @@ java -cp "$JAVA_PATH:$JAVA_PATH/*" -Djava.library.path=$JAVA_PATH tests.detailed
 ### Windows (64bit) [PowerShell]
 ```
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-wget https://github.com/CodeBrig/Journey/releases/download/0.4.1-78-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
+wget https://github.com/CodeBrig/Journey/releases/download/0.4.1-83-assets/jcef-distrib-windows64.zip -OutFile jcef-distrib-windows64.zip
 Expand-Archive jcef-distrib-windows64.zip .
 
 java -cp "./win64/bin;./win64/bin/*" "-Djava.library.path=./win64/bin/lib/win64" tests.detailed.MainFrame
