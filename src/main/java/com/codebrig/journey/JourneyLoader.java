@@ -75,6 +75,8 @@ public class JourneyLoader extends URLClassLoader {
                 } else {
                     is64bit = (System.getProperty("os.arch").contains("64"));
                 }
+                if (System.getProperty("sun.arch.data.model").equals("32"))
+                    is64Bit = false; // Can't load 64bit DLLs on 32bit JVM
                 if (is64bit) {
                     providerName = "windows_64";
                     jcefName = "win64";
