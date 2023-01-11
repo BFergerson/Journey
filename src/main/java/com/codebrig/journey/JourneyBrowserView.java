@@ -1,20 +1,20 @@
 package com.codebrig.journey;
 
-import com.codebrig.journey.proxy.CefAppProxy;
-import com.codebrig.journey.proxy.CefBrowserProxy;
-import com.codebrig.journey.proxy.CefClientProxy;
-import com.codebrig.journey.proxy.browser.CefFrameProxy;
-import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
+import static org.joor.Reflect.on;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static org.joor.Reflect.on;
+import javax.swing.*;
+
+import com.codebrig.journey.proxy.CefAppProxy;
+import com.codebrig.journey.proxy.CefBrowserProxy;
+import com.codebrig.journey.proxy.CefClientProxy;
+import com.codebrig.journey.proxy.browser.CefFrameProxy;
+import com.codebrig.journey.proxy.handler.CefLifeSpanHandlerProxy;
 
 /**
  * Wraps CefApp/CefClient/CefBrowser and extends JComponent for ease of implementation.
@@ -24,7 +24,7 @@ import static org.joor.Reflect.on;
  * @since 0.1.1
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class JourneyBrowserView extends JComponent {
+public class JourneyBrowserView {
 
     public static final String ABOUT_BLANK = "about:blank";
     public static final JourneySettings DEFAULT_SETTINGS;
@@ -32,7 +32,7 @@ public class JourneyBrowserView extends JComponent {
     static {
         JourneyLoader.setup();
         DEFAULT_SETTINGS = new JourneySettings();
-        DEFAULT_SETTINGS.setWindowlessRenderingEnabled(false);
+        DEFAULT_SETTINGS.setWindowlessRenderingEnabled(true);
         DEFAULT_SETTINGS.setLogFile(new File(JourneyLoader.NATIVE_DIRECTORY, "debug.log").getAbsolutePath());
     }
 
@@ -44,19 +44,6 @@ public class JourneyBrowserView extends JComponent {
     public JourneyBrowserView(CefBrowserProxy browser) {
         this.cefBrowser = Objects.requireNonNull(browser);
         this.cefClient = browser.getClient();
-
-        setLayout(new BorderLayout());
-        if (SwingUtilities.isEventDispatchThread()) {
-            add(cefBrowser.getUIComponent(), "Center");
-        } else {
-            try {
-                SwingUtilities.invokeAndWait(() -> {
-                    add(cefBrowser.getUIComponent(), "Center");
-                });
-            } catch (InterruptedException | InvocationTargetException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
     }
 
     public JourneyBrowserView() {
@@ -74,7 +61,6 @@ public class JourneyBrowserView extends JComponent {
     public JourneyBrowserView(String[] args, JourneySettings journeySettings, String initialUrl) {
         JourneyBrowserView.journeySettings = journeySettings;
 
-        setLayout(new BorderLayout());
         if (SwingUtilities.isEventDispatchThread()) {
             if (cefApp == null) {
                 Object realCefApp = on(JourneyLoader.getJourneyClassLoader().loadClass("org.cef.CefApp"))
@@ -82,8 +68,7 @@ public class JourneyBrowserView extends JComponent {
                 cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
             }
             cefClient = cefApp.createClient();
-            cefBrowser = cefClient.createBrowser(initialUrl, false, false);
-            add(cefBrowser.getUIComponent(), "Center");
+            cefBrowser = cefClient.createBrowser(initialUrl, true, false);
         } else {
             try {
                 SwingUtilities.invokeAndWait(() -> {
@@ -93,8 +78,7 @@ public class JourneyBrowserView extends JComponent {
                         cefApp = on(realCefApp).as(CefAppProxy.class, JourneyLoader.getJourneyClassLoader());
                     }
                     cefClient = cefApp.createClient();
-                    cefBrowser = cefClient.createBrowser(initialUrl, false, false);
-                    add(cefBrowser.getUIComponent(), "Center");
+                    cefBrowser = cefClient.createBrowser(initialUrl, true, false);
                 });
             } catch (InterruptedException | InvocationTargetException ex) {
                 throw new RuntimeException(ex);
