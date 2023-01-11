@@ -1,6 +1,10 @@
 package com.codebrig.journey;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -103,7 +107,7 @@ public class JourneyLoader extends URLClassLoader {
             if ("online".equals(MODE) && !localNative.exists()) {
                 JOURNEY_LOADER_LISTENER.downloadingNativeCEFFiles();
                 Files.copy(new URL(String.format("%s/releases/download/%s-%s-assets/%s",
-                        PROJECT_URL, VERSION, chromiumMajorVersion, jcefDistribFile)).openStream(),
+                                PROJECT_URL, VERSION, chromiumMajorVersion, jcefDistribFile)).openStream(),
                         localNative.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 JOURNEY_LOADER_LISTENER.downloadedNativeCEFFiles();
             }
@@ -194,9 +198,11 @@ public class JourneyLoader extends URLClassLoader {
                     Thread.currentThread().getContextClassLoader());
             JOURNEY_CLASS_LOADER.loadJar(gluegenRtJar);
             JOURNEY_CLASS_LOADER.loadJar(jcefJar);
+            System.load(new File(NATIVE_DIRECTORY, "libGLESv2.dll").getAbsolutePath());
+            System.load(new File(NATIVE_DIRECTORY, "libEGL.dll").getAbsolutePath());
             if (chromiumMajorVersion >= 73) {
-                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup");
-                method.invoke(null);
+                Method method = JOURNEY_CLASS_LOADER.loadClass("org.cef.CefApp").getMethod("startup", String[].class);
+                method.invoke(null, (Object) new String[]{});
             }
             JOURNEY_LOADER_LISTENER.loadedJCEF();
             JOURNEY_LOADER_LISTENER.journeyLoaderComplete();
